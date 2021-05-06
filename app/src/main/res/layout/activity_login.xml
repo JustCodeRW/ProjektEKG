@@ -10,26 +10,28 @@
     tools:context=".Login">
 
     <ImageView
+        android:id="@+id/logo_image"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:id="@+id/logo_image"
-        android:transitionName="logo_image"
+        android:transitionName="logo_image_transition"
         android:src="@drawable/ekg_monitor" />
 
     <TextView
+        android:id="@+id/logo_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/logo_name"
+        android:transitionName="logo_text_transition"
         android:fontFamily="@font/bungee"
-        android:text="Hello , Welcome Back"
+        android:text="Smart-EKG"
         android:textSize="40sp"
         android:textColor="@color/black"/>
 
     <TextView
+        android:id="@+id/infoText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sign in to continue"
-        android:transitionName="logo_name"
+        android:transitionName="logo_desc_trasition"
         android:textSize="18sp" />
 
     <LinearLayout
@@ -40,9 +42,9 @@
         android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/username"
             android:hint="Username"
             app:hintTextColor="@color/black"
             app:boxStrokeColor="@color/black"
@@ -50,13 +52,14 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:transitionName="username_transition"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/password"
             android:hint="Password"
             app:passwordToggleEnabled="true"
             app:hintTextColor="@color/black"
@@ -66,7 +69,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword"
+                android:transitionName="password_transition"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
@@ -80,6 +84,7 @@
             android:layout_margin="5dp"/>
 
         <Button
+            android:id="@+id/startBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -87,9 +92,11 @@
             android:background="@color/black"
             android:text="Start"
             android:textColor="#fff"
-            app:backgroundTint="@null"/>
+            app:backgroundTint="@null"
+            android:transitionName="startBtn_trasition"/>
 
         <Button
+            android:id="@+id/login_registrationBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
@@ -97,7 +104,8 @@
             android:text="New user? Sign UP"
             android:background="@android:color/transparent"
             android:layout_margin="5dp"
-            android:textColor="#000"/>
+            android:textColor="#000"
+            android:transitionName="signIn_transition"/>
 
     </LinearLayout>
 

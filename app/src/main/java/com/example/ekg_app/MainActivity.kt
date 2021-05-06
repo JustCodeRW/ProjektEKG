@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, Login::class.java)
 
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                val options = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity, UtilPair.create(image, "logo_image"), UtilPair.create(logo, "logo_text"))
+                val options = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity, UtilPair.create(image, "logo_image_transition"), UtilPair.create(logo, "logo_text_transition"))
                 startActivity(intent, options.toBundle())
             }
 

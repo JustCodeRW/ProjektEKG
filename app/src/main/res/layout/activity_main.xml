@@ -15,7 +15,7 @@
         android:layout_marginTop="150dp"
         android:layout_marginEnd="10dp"
         android:src="@drawable/ekg_monitor"
-        android:transitionName="logo_image"
+        android:transitionName="logo_image_transition"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +31,7 @@
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="70sp"
-        android:transitionName="logo_text"
+        android:transitionName="logo_text_transition"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
