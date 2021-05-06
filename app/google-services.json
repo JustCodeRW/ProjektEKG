@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "539363609195",
+    "project_id": "ekg-app-f4d09",
+    "storage_bucket": "ekg-app-f4d09.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:539363609195:android:aa642aba389a779e72bf2e",
+        "android_client_info": {
+          "package_name": "com.example.ekg_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "539363609195-8s4rl0dmse7abbqfon5138en5pkbbqv6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuGjPaDaNNmHO3xggqrf4sHWLdirW3anM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "539363609195-8s4rl0dmse7abbqfon5138en5pkbbqv6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
