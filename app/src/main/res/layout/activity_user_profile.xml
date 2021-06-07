@@ -59,7 +59,7 @@
                 android:layout_height="125dp"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="#E2883737"
+                app:cardBackgroundColor="#D32F2F"
                 app:cardElevation="10dp">
 
                 <RelativeLayout
@@ -156,12 +156,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
+                app:boxBackgroundColor="@android:color/transparent"
                 android:hint="Full Name">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/avatar_2"
+                    android:drawableStart="@drawable/ic_account_circle"
                     android:drawablePadding="10dp"
                     android:text="RowOne" />
 
@@ -171,12 +172,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
+                app:boxBackgroundColor="@android:color/transparent"
                 android:hint="Email">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/avatar_2"
+                    android:drawableStart="@drawable/ic_email"
                     android:drawablePadding="10dp"
                     android:text="TestEmail@gmail.com" />
 
@@ -186,12 +188,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
+                app:boxBackgroundColor="@android:color/transparent"
                 android:hint="Phone Number">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/avatar_2"
+                    android:drawableStart="@drawable/ic_call"
                     android:drawablePadding="10dp"
                     android:text="+49- 178199940" />
 
@@ -201,12 +204,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
+                app:boxBackgroundColor="@android:color/transparent"
                 android:hint="Password">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/avatar_2"
+                    android:drawableStart="@drawable/ic_lock"
                     android:drawablePadding="10dp"
                     android:text="test123" />
 
@@ -218,6 +222,7 @@
                 android:background="#783636"
                 android:fontFamily="@font/bungee"
                 android:text="Update"
+                android:layout_marginTop="15dp"
                 app:backgroundTint="@null" />
 
         </LinearLayout>

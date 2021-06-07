@@ -1,8 +1,8 @@
 package com.example.ekg_app
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.DatabaseReference
@@ -44,6 +44,8 @@ class Registration : AppCompatActivity() {
 
             reference.child(phoneNo).setValue(dataModel)
 
+            val intent = Intent(this@Registration, UserProfile::class.java)
+            startActivity(intent)
         }
     }
 }
