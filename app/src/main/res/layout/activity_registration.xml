@@ -125,10 +125,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/black"
+        android:onClick="registerUser"
         android:text="Start"
         android:textColor="#fff"
-        app:backgroundTint="@null"
-        android:transitionName="startBtn_trasition"/>
+        android:transitionName="startBtn_trasition"
+        app:backgroundTint="@null" />
 
     <Button
         android:id="@+id/login_registrationBtn"
