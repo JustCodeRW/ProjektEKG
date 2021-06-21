@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Registration"
-    android:orientation="vertical"
     android:background="@color/white"
     android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
     <ImageView
         android:id="@+id/logo_image"
@@ -121,7 +125,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/startBtn"
+        android:id="@+id/loginBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/black"
@@ -132,7 +136,7 @@
         app:backgroundTint="@null" />
 
     <Button
-        android:id="@+id/login_registrationBtn"
+        android:id="@+id/registrationBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -141,4 +145,5 @@
         android:textColor="#000"
         android:transitionName="signIn_transition"/>
 
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

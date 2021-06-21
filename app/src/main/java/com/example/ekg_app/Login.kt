@@ -12,9 +12,13 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.database.*
 import android.util.Pair as UtilPair
 
 class Login : AppCompatActivity() {
+    private lateinit var username : TextInputLayout
+    private lateinit var password : TextInputLayout
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -24,10 +28,10 @@ class Login : AppCompatActivity() {
         val image : ImageView = findViewById(R.id.logo_image)
         val logoText : TextView = findViewById(R.id.logo_text)
         val infoText : TextView = findViewById(R.id.infoText)
-        val username : TextInputLayout = findViewById(R.id.username)
-        val password : TextInputLayout = findViewById(R.id.password)
-        val loginBtn : Button = findViewById(R.id.login_registrationBtn)
-        val buttonLoadRegistration : Button = findViewById(R.id.login_registrationBtn)
+        username = findViewById(R.id.username)
+        password = findViewById(R.id.password)
+        val loginBtn : Button = findViewById(R.id.loginBtn)
+        val buttonLoadRegistration : Button = findViewById(R.id.registrationBtn)
 
         buttonLoadRegistration.setOnClickListener {
             val intent = Intent(this@Login, Registration::class.java)
@@ -61,5 +65,104 @@ class Login : AppCompatActivity() {
                 startActivity(intent, options.toBundle())
             }
         }
+    }
+
+    private fun validateUserName(): Boolean {
+        val value : String = username.editText?.text.toString()
+
+        if (value.isEmpty()) {
+            username.error = "Field cannot be empty"
+            return false
+        } else {
+            username.error = null
+            username.isEnabled = false
+            return true
+        }
+    }
+
+    private fun validatePassword(): Boolean {
+        val value: String = password.editText?.text.toString()
+
+        if (value.isEmpty()) {
+            password.error = "Field cannot be empty"
+            return false
+        } else {
+            password.error = null
+            password.isErrorEnabled = false
+            return true
+        }
+    }
+
+     fun loginUser(view: View) {
+        if (!validateUserName() or !validatePassword()) {
+            return
+        } else {
+            isUser()
+        }
+    }
+
+    private fun isUser() {
+        Log.d("Login", "Testen ob check anfaengt")
+
+        val userEnteredUsername : String = username.editText?.text.toString().trim()
+        val userEnteredPassword : String = password.editText?.text.toString().trim()
+
+        val reference : DatabaseReference = FirebaseDatabase.getInstance("https://ekg-app-f4d09-default-rtdb.europe-west1.firebasedatabase.app/").reference
+
+        val checkUserReference : Query = reference.orderByChild("username").equalTo(userEnteredUsername)
+
+        checkUserReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                Log.d("ogin", "Snapshot " + snapshot.exists())
+
+                if (snapshot.exists()) {
+                    Log.d("Login", "Testen ob snapshot existiert")
+
+                    username.error = null
+                    username.isErrorEnabled = false
+
+                    val passwordFromDB : String =
+                        snapshot.child(userEnteredUsername).child("password").getValue(String::class.java).toString()
+
+                    if (passwordFromDB == userEnteredPassword) {
+                        Log.d("Login", "Password testen und vergleichen")
+
+                        username.error = null
+                        username.isErrorEnabled = false
+
+                        val nameFromDB : String? = snapshot.child(userEnteredUsername).child("password").getValue(String::class.java)
+                        val usernameFromDB : String? = snapshot.child(userEnteredUsername).child("username").getValue(String::class.java)
+                        val phoneNoFromDB : String? = snapshot.child(userEnteredUsername).child("phoneNo").getValue(String::class.java)
+                        val emailFromDB : String? = snapshot.child(userEnteredUsername).child("email").getValue(String::class.java)
+
+                        val intent = Intent(applicationContext, UserProfile::class.java)
+
+                        intent.putExtra("name", nameFromDB)
+                        intent.putExtra("username", usernameFromDB)
+                        intent.putExtra("email", emailFromDB)
+                        intent.putExtra("phoneNo", phoneNoFromDB)
+                        intent.putExtra("password", passwordFromDB)
+
+                        startActivity(intent)
+                    } else {
+                        Log.d("Login", "Testen ob else starte --- >" + password)
+
+                        password.error = "Wrong Password"
+                        password.requestFocus()
+                    }
+                } else {
+                    Log.d("Login", "Testen ob anderer else zweig anfaengt")
+
+                    username.error = "No such User exists"
+                    username.requestFocus()
+                    username.requestFocusFromTouch()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        } )
+
     }
 }

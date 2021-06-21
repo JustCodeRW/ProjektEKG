@@ -31,12 +31,6 @@ class Registration : AppCompatActivity() {
         registeredPhoneNo = findViewById(R.id.phoneNo)
         registeredPassword = findViewById(R.id.password)
 
-//        val login_registerBtn: Button = findViewById(R.id.login_registrationBtn)
-
-
-//        val intent = Intent(this@Registration, UserProfile::class.java)
-//        startActivity(intent)
-
     }
 
     private fun validateName(): Boolean {
@@ -145,7 +139,10 @@ class Registration : AppCompatActivity() {
 
         val dataModel = UserDataModel(name, userName, email, phoneNo, password)
 
-        reference.child(phoneNo).setValue(dataModel)
+        reference.child(userName).setValue(dataModel)
+
+        val intent = Intent(this@Registration, UserProfile::class.java)
+        startActivity(intent)
 
     }
 }

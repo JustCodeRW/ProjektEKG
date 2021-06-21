@@ -84,7 +84,7 @@
             android:layout_margin="5dp"/>
 
         <Button
-            android:id="@+id/startBtn"
+            android:id="@+id/loginBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -93,10 +93,11 @@
             android:text="Start"
             android:textColor="#fff"
             app:backgroundTint="@null"
+            android:onClick="loginUser"
             android:transitionName="startBtn_trasition"/>
 
         <Button
-            android:id="@+id/login_registrationBtn"
+            android:id="@+id/registrationBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
