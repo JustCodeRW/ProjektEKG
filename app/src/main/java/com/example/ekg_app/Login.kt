@@ -1,6 +1,7 @@
 package com.example.ekg_app
 
 import android.app.ActivityOptions
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -102,22 +104,18 @@ class Login : AppCompatActivity() {
     }
 
     private fun isUser() {
-        Log.d("Login", "Testen ob check anfaengt")
-
         val userEnteredUsername : String = username.editText?.text.toString().trim()
         val userEnteredPassword : String = password.editText?.text.toString().trim()
 
-        val reference : DatabaseReference = FirebaseDatabase.getInstance("https://ekg-app-f4d09-default-rtdb.europe-west1.firebasedatabase.app/").reference
-
-        val checkUserReference : Query = reference.orderByChild("username").equalTo(userEnteredUsername)
+        val reference : DatabaseReference = FirebaseDatabase.getInstance("https://ekg-app-f4d09-default-rtdb.europe-west1.firebasedatabase.app/").getReference("users")
+        val checkUserReference : Query = reference.orderByChild("userName").equalTo(userEnteredUsername)
 
         checkUserReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                Log.d("ogin", "Snapshot " + snapshot.exists())
+
+               Log.d("Login", "snapshot data " + snapshot.value.toString())
 
                 if (snapshot.exists()) {
-                    Log.d("Login", "Testen ob snapshot existiert")
-
                     username.error = null
                     username.isErrorEnabled = false
 
@@ -125,8 +123,6 @@ class Login : AppCompatActivity() {
                         snapshot.child(userEnteredUsername).child("password").getValue(String::class.java).toString()
 
                     if (passwordFromDB == userEnteredPassword) {
-                        Log.d("Login", "Password testen und vergleichen")
-
                         username.error = null
                         username.isErrorEnabled = false
 
@@ -145,17 +141,13 @@ class Login : AppCompatActivity() {
 
                         startActivity(intent)
                     } else {
-                        Log.d("Login", "Testen ob else starte --- >" + password)
-
                         password.error = "Wrong Password"
+                        Log.d("Password focus", "Hier password 1 " + password.requestFocus())
                         password.requestFocus()
                     }
                 } else {
-                    Log.d("Login", "Testen ob anderer else zweig anfaengt")
-
                     username.error = "No such User exists"
                     username.requestFocus()
-                    username.requestFocusFromTouch()
                 }
             }
 
@@ -164,5 +156,11 @@ class Login : AppCompatActivity() {
             }
         } )
 
+    }
+
+    private fun requestFocus(view : View) {
+        if (view.requestFocus()) {
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+        }
     }
 }
