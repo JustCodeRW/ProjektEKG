@@ -1,18 +1,15 @@
 package com.example.ekg_app
 
 import android.app.ActivityOptions
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.*
 import android.util.Pair as UtilPair
@@ -123,7 +120,7 @@ class Login : AppCompatActivity() {
                         username.error = null
                         username.isErrorEnabled = false
 
-                        val nameFromDB : String? = snapshot.child(userEnteredUsername).child("password").getValue(String::class.java)
+                        val nameFromDB : String? = snapshot.child(userEnteredUsername).child("name").getValue(String::class.java)
                         val usernameFromDB : String? = snapshot.child(userEnteredUsername).child("username").getValue(String::class.java)
                         val phoneNoFromDB : String? = snapshot.child(userEnteredUsername).child("phoneNo").getValue(String::class.java)
                         val emailFromDB : String? = snapshot.child(userEnteredUsername).child("email").getValue(String::class.java)
