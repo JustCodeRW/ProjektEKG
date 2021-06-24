@@ -9,10 +9,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.*
 import android.util.Pair as UtilPair
@@ -112,9 +112,6 @@ class Login : AppCompatActivity() {
 
         checkUserReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-
-               Log.d("Login", "snapshot data " + snapshot.value.toString())
-
                 if (snapshot.exists()) {
                     username.error = null
                     username.isErrorEnabled = false
@@ -142,11 +139,14 @@ class Login : AppCompatActivity() {
                         startActivity(intent)
                     } else {
                         password.error = "Wrong Password"
-                        Log.d("Password focus", "Hier password 1 " + password.requestFocus())
+                        password.editText?.text?.clear()
                         password.requestFocus()
                     }
                 } else {
-                    username.error = "No such User exists"
+                    username.error = "Not such User exists"
+                    username.editText?.text?.clear()
+                    password.editText?.text?.clear()
+                    username.isEnabled = true
                     username.requestFocus()
                 }
             }
