@@ -155,9 +155,4 @@ class Login : AppCompatActivity() {
 
     }
 
-    private fun requestFocus(view : View) {
-        if (view.requestFocus()) {
-            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
-        }
-    }
 }

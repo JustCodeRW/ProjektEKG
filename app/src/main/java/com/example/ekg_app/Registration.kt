@@ -5,8 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 
 class Registration : AppCompatActivity() {
     private lateinit var rootNode: FirebaseDatabase
@@ -140,8 +139,42 @@ class Registration : AppCompatActivity() {
 
         reference.child(userName).setValue(dataModel)
 
-        val intent = Intent(this@Registration, UserProfile::class.java)
-        startActivity(intent)
+        dataTransfer(userName)
 
+    }
+
+
+    private fun dataTransferToProfileView(userName: String) {
+        val userReference : Query = reference.orderByChild("userName").equalTo(userName)
+
+        userReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    val passwordFromDB : String = snapshot.child(userName).child("password").getValue(String::class.java).toString()
+                    val nameFromDB : String? = snapshot.child(userName).child("name").getValue(String::class.java)
+                    val usernameFromDB : String? = snapshot.child(userName).child("username").getValue(String::class.java)
+                    val phoneNoFromDB : String? = snapshot.child(userName).child("phoneNo").getValue(String::class.java)
+                    val emailFromDB : String? = snapshot.child(userName).child("email").getValue(String::class.java)
+
+                    val intent = Intent(this@Registration, UserProfile::class.java)
+
+                    intent.putExtra("name", nameFromDB)
+                    intent.putExtra("username", usernameFromDB)
+                    intent.putExtra("email", emailFromDB)
+                    intent.putExtra("phoneNo", phoneNoFromDB)
+                    intent.putExtra("password", passwordFromDB)
+
+                    startActivity(intent)
+
+                } else {
+                    val intent = Intent(this@Registration, UserProfile::class.java)
+                    startActivity(intent)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                print("Error in registration")
+            }
+        })
     }
 }
