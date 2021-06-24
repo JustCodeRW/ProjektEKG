@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -57,7 +56,7 @@ class Registration : AppCompatActivity() {
             registeredUsername.error = "Username too long"
             return false
         } else if (!value.matches(noWhiteSpace.toRegex())) {
-            registeredUsername.error = "White Spaces are not allowed"
+            registeredUsername.error = "White Spaces are not allowed or username too short"
             return false
         } else {
             registeredUsername.error = null
