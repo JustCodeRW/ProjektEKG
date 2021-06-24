@@ -139,7 +139,7 @@ class Registration : AppCompatActivity() {
 
         reference.child(userName).setValue(dataModel)
 
-        dataTransfer(userName)
+        dataTransferToProfileView(userName)
 
     }
 
