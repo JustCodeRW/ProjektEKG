@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EKGApp">
-        <activity android:name=".UserProfile"></activity>
+        <activity android:name=".RecordScreen"></activity>
+        <activity android:name=".UserProfile" />
         <activity android:name=".Registration" />
         <activity android:name=".Login" />
         <activity android:name=".MainActivity">
