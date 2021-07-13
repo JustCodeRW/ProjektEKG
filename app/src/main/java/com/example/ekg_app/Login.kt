@@ -125,7 +125,7 @@ class Login : AppCompatActivity() {
                         val phoneNoFromDB : String? = snapshot.child(userEnteredUsername).child("phoneNo").getValue(String::class.java)
                         val emailFromDB : String? = snapshot.child(userEnteredUsername).child("email").getValue(String::class.java)
 
-                        val intent = Intent(applicationContext, RecordScreen::class.java)
+                        val intent = Intent(applicationContext, UserProfile::class.java)
 
                         intent.putExtra("name", nameFromDB)
                         intent.putExtra("username", usernameFromDB)

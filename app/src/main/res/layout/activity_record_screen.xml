@@ -22,7 +22,7 @@
             android:text="Record EKG"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="38dp"></TextView>
+            android:textSize="38sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -57,8 +57,10 @@
         </LinearLayout>
 
         <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChart"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="300dp"
+            android:layout_marginTop="50dp">
         </com.github.mikephil.charting.charts.LineChart>
 
     </LinearLayout>

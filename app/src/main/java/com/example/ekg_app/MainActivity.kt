@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         logo.startAnimation(bottomAnimation)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            val intent = Intent(this@MainActivity, Login::class.java)
+            val intent = Intent(this@MainActivity, RecordScreen::class.java)
 
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                 val options = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity, UtilPair.create(image, "logo_image_transition"), UtilPair.create(logo, "logo_text_transition"))
