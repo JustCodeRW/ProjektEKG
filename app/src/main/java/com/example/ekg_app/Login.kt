@@ -1,6 +1,10 @@
 package com.example.ekg_app
 
+import android.app.Activity
 import android.app.ActivityOptions
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothManager
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -12,13 +16,20 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.*
 import android.util.Pair as UtilPair
 
+private const val ENABLE_BLUETOOTH_REQUEST_CODE = 1
+
 class Login : AppCompatActivity() {
     private lateinit var username : TextInputLayout
     private lateinit var password : TextInputLayout
+    private val bluetoothAdapter: BluetoothAdapter by lazy {
+        val bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        bluetoothManager.adapter
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,8 +39,10 @@ class Login : AppCompatActivity() {
         val image : ImageView = findViewById(R.id.logo_image)
         val logoText : TextView = findViewById(R.id.logo_text)
         val infoText : TextView = findViewById(R.id.infoText)
+
         username = findViewById(R.id.username)
         password = findViewById(R.id.password)
+
         val loginBtn : Button = findViewById(R.id.loginBtn)
         val buttonLoadRegistration : Button = findViewById(R.id.registrationBtn)
 
@@ -90,6 +103,29 @@ class Login : AppCompatActivity() {
                 )
                 startActivity(intent, options.toBundle())
             }
+        }
+        onResume()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!bluetoothAdapter.isEnabled) {
+            promptEnableBluetooth()
+        }
+    }
+
+    var resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data: Intent? = result.data
+                promptEnableBluetooth()
+            }
+        }
+
+    private fun promptEnableBluetooth() {
+        if (!bluetoothAdapter.isEnabled) {
+            val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+            resultLauncher.launch(enableBtIntent)
         }
     }
 
@@ -181,5 +217,4 @@ class Login : AppCompatActivity() {
         } )
 
     }
-
 }

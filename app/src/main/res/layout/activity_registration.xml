@@ -125,7 +125,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/loginBtn"
+            android:id="@+id/startRegisterBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/black"
@@ -136,7 +136,7 @@
             app:backgroundTint="@null" />
 
         <Button
-            android:id="@+id/registrationBtn"
+            android:id="@+id/backToLoginBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
