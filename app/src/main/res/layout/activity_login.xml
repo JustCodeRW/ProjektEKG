@@ -37,7 +37,8 @@
             android:layout_height="wrap_content"
             android:text="Sign in to continue"
             android:textSize="18sp"
-            android:transitionName="logo_desc_trasition" />
+            android:textColor="#000"
+            android:transitionName="logo_desc_transition" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,13 +53,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Username"
-                app:boxStrokeColor="@color/black"
-                app:hintTextColor="@color/black">
+                android:textColorHint="#585858"
+                app:boxStrokeColor="#000"
+                app:hintTextColor="#000">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:transitionName="username_transition" />
+                    android:transitionName="username_transition"
+                    android:textColor="#000"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -67,15 +70,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Password"
-                app:boxStrokeColor="@color/black"
-                app:hintTextColor="@color/black"
+                android:textColorHint="#585858"
+                app:boxStrokeColor= "#000"
+                app:hintTextColor="#000"
                 app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
-                    android:transitionName="password_transition" />
+                    android:transitionName="password_transition"
+                    android:textColor="#000"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
@@ -86,7 +91,7 @@
                 android:background="@android:color/transparent"
                 android:elevation="0dp"
                 android:text="Forget Password?"
-                android:textColor="#000000" />
+                android:textColor="#000" />
 
             <Button
                 android:id="@+id/loginBtn"
@@ -98,7 +103,7 @@
                 android:onClick="loginUser"
                 android:text="Start"
                 android:textColor="#fff"
-                android:transitionName="startBtn_trasition"
+                android:transitionName="startBtn_transition"
                 app:backgroundTint="@null" />
 
             <Button
@@ -112,9 +117,6 @@
                 android:text="New user? Sign UP"
                 android:textColor="#000"
                 android:transitionName="signIn_transition" />
-
         </LinearLayout>
-
     </LinearLayout>
-
 </ScrollView>

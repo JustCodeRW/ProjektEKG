@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,16 +17,20 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.*
+import java.util.jar.Manifest
 import android.util.Pair as UtilPair
 
 private const val ENABLE_BLUETOOTH_REQUEST_CODE = 1
 
 class Login : AppCompatActivity() {
-    private lateinit var username : TextInputLayout
-    private lateinit var password : TextInputLayout
+    private lateinit var username: TextInputLayout
+    private lateinit var password: TextInputLayout
     private val bluetoothAdapter: BluetoothAdapter by lazy {
         val bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         bluetoothManager.adapter
@@ -36,15 +41,15 @@ class Login : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         //Hooks
-        val image : ImageView = findViewById(R.id.logo_image)
-        val logoText : TextView = findViewById(R.id.logo_text)
-        val infoText : TextView = findViewById(R.id.infoText)
+        val image: ImageView = findViewById(R.id.logo_image)
+        val logoText: TextView = findViewById(R.id.logo_text)
+        val infoText: TextView = findViewById(R.id.infoText)
 
         username = findViewById(R.id.username)
         password = findViewById(R.id.password)
 
-        val loginBtn : Button = findViewById(R.id.loginBtn)
-        val buttonLoadRegistration : Button = findViewById(R.id.registrationBtn)
+        val loginBtn: Button = findViewById(R.id.loginBtn)
+        val buttonLoadRegistration: Button = findViewById(R.id.registrationBtn)
 
         buttonLoadRegistration.setOnClickListener {
             val intent = Intent(this@Login, Registration::class.java)
@@ -104,33 +109,44 @@ class Login : AppCompatActivity() {
                 startActivity(intent, options.toBundle())
             }
         }
-        onResume()
+        //checkPermission(android.Manifest.permission.BLUETOOTH_ADMIN, ENABLE_BLUETOOTH_REQUEST_CODE)
+//        onResume()
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (!bluetoothAdapter.isEnabled) {
-            promptEnableBluetooth()
-        }
-    }
+    /* private fun checkPermission(permission: String, requestCode: Int) {
+         if (ContextCompat.checkSelfPermission(this@Login, permission) == PackageManager.PERMISSION_DENIED) {
 
-    var resultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val data: Intent? = result.data
-                promptEnableBluetooth()
-            }
-        }
+             // Requesting the permission
+             ActivityCompat.requestPermissions(this@Login, arrayOf(permission), requestCode)
+         } else {
+             Toast.makeText(this@Login, "Permission already granted", Toast.LENGTH_SHORT).show()
+         }
+     }
 
-    private fun promptEnableBluetooth() {
-        if (!bluetoothAdapter.isEnabled) {
-            val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-            resultLauncher.launch(enableBtIntent)
-        }
-    }
+     override fun onResume() {
+         super.onResume()
+         if (!bluetoothAdapter.isEnabled) {
+             promptEnableBluetooth()
+         }
+     }
+
+     var resultLauncher =
+         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+             if (result.resultCode == Activity.RESULT_OK) {
+                 val data: Intent? = result.data
+                 promptEnableBluetooth()
+             }
+         }
+
+     private fun promptEnableBluetooth() {
+         if (!bluetoothAdapter.isEnabled) {
+             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+             resultLauncher.launch(enableBtIntent)
+         }
+     }*/
 
     private fun validateUserName(): Boolean {
-        val value : String = username.editText?.text.toString()
+        val value: String = username.editText?.text.toString()
 
         if (value.isEmpty()) {
             username.error = "Field cannot be empty"
@@ -155,7 +171,7 @@ class Login : AppCompatActivity() {
         }
     }
 
-     fun loginUser(view: View) {
+    fun loginUser(view: View) {
         if (!validateUserName() or !validatePassword()) {
             return
         } else {
@@ -164,11 +180,14 @@ class Login : AppCompatActivity() {
     }
 
     private fun isUser() {
-        val userEnteredUsername : String = username.editText?.text.toString().trim()
-        val userEnteredPassword : String = password.editText?.text.toString().trim()
+        val userEnteredUsername: String = username.editText?.text.toString().trim()
+        val userEnteredPassword: String = password.editText?.text.toString().trim()
 
-        val reference : DatabaseReference = FirebaseDatabase.getInstance("https://ekg-app-f4d09-default-rtdb.europe-west1.firebasedatabase.app/").getReference("users")
-        val checkUserReference : Query = reference.orderByChild("userName").equalTo(userEnteredUsername)
+        val reference: DatabaseReference =
+            FirebaseDatabase.getInstance("https://ekg-app-f4d09-default-rtdb.europe-west1.firebasedatabase.app/")
+                .getReference("users")
+        val checkUserReference: Query =
+            reference.orderByChild("userName").equalTo(userEnteredUsername)
 
         checkUserReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -176,17 +195,25 @@ class Login : AppCompatActivity() {
                     username.error = null
                     username.isErrorEnabled = false
 
-                    val passwordFromDB : String =
-                        snapshot.child(userEnteredUsername).child("password").getValue(String::class.java).toString()
+                    val passwordFromDB: String =
+                        snapshot.child(userEnteredUsername).child("password")
+                            .getValue(String::class.java).toString()
 
                     if (passwordFromDB == userEnteredPassword) {
                         username.error = null
                         username.isErrorEnabled = false
 
-                        val nameFromDB : String? = snapshot.child(userEnteredUsername).child("name").getValue(String::class.java)
-                        val usernameFromDB : String? = snapshot.child(userEnteredUsername).child("username").getValue(String::class.java)
-                        val phoneNoFromDB : String? = snapshot.child(userEnteredUsername).child("phoneNo").getValue(String::class.java)
-                        val emailFromDB : String? = snapshot.child(userEnteredUsername).child("email").getValue(String::class.java)
+                        val nameFromDB: String? = snapshot.child(userEnteredUsername).child("name")
+                            .getValue(String::class.java)
+                        val usernameFromDB: String? =
+                            snapshot.child(userEnteredUsername).child("username")
+                                .getValue(String::class.java)
+                        val phoneNoFromDB: String? =
+                            snapshot.child(userEnteredUsername).child("phoneNo")
+                                .getValue(String::class.java)
+                        val emailFromDB: String? =
+                            snapshot.child(userEnteredUsername).child("email")
+                                .getValue(String::class.java)
 
                         val intent = Intent(applicationContext, UserProfile::class.java)
 
@@ -214,7 +241,7 @@ class Login : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {
                 print(error.message)
             }
-        } )
+        })
 
     }
 }

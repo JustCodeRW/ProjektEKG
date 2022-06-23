@@ -29,7 +29,7 @@
         android:fontFamily="@font/bangers"
         android:text="Smart-EKG"
         android:textAlignment="center"
-        android:textColor="#FFFFFF"
+        android:textColor="#FFF"
         android:textSize="70sp"
         android:transitionName="logo_text_transition"
         app:layout_constraintEnd_toEndOf="parent"

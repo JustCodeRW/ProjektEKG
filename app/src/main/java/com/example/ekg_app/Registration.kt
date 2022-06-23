@@ -1,9 +1,13 @@
 package com.example.ekg_app
 
+import android.app.ActivityOptions
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Pair
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.*
 
@@ -16,7 +20,9 @@ class Registration : AppCompatActivity() {
     private lateinit var registeredPhoneNo: TextInputLayout
     private lateinit var registeredPassword: TextInputLayout
     private lateinit var registeredUsername: TextInputLayout
-
+    private lateinit var image: ImageView
+    private lateinit var logoText: TextView
+    private lateinit var infoText: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +34,10 @@ class Registration : AppCompatActivity() {
         registeredEmail = findViewById(R.id.email)
         registeredPhoneNo = findViewById(R.id.phoneNo)
         registeredPassword = findViewById(R.id.password)
+
+        image = findViewById(R.id.logo_image)
+        logoText = findViewById(R.id.logo_text)
+        infoText = findViewById(R.id.infoText)
 
     }
 
@@ -119,14 +129,38 @@ class Registration : AppCompatActivity() {
         }
     }
 
+    fun backToLogin(view: View) {
+        val intent = Intent(this@Registration, Login::class.java)
+        val pair1: android.util.Pair<View, String> =
+            Pair.create(image, "logo_image_transition")
+        val pair2: android.util.Pair<View, String> =
+            Pair.create(logoText, "logo_text_transition")
+        val pair3: android.util.Pair<View, String> =
+            Pair.create(infoText, "logo_desc_transition")
+        val pair4: android.util.Pair<View, String> =
+            Pair.create(registeredUsername, "username_transition")
+        val pair5: android.util.Pair<View, String> =
+            Pair.create(registeredPassword, "password_transition")
+
+        val options = ActivityOptions.makeSceneTransitionAnimation(
+            this@Registration,
+            pair1,
+            pair2,
+            pair3,
+            pair4,
+            pair5,
+        )
+        startActivity(intent, options.toBundle())
+    }
 
     fun registerUser(view: View) {
-        if (!validateName() or !validateUserName() or  !validateEmail() or  !validatePhoneNo() or  !validatePassword()) {
+        if (!validateName() or !validateUserName() or !validateEmail() or !validatePhoneNo() or !validatePassword()) {
             return
         }
 
         //save data in firebase (database) on button click
-        rootNode = FirebaseDatabase.getInstance("https://ekg-app-f4d09-default-rtdb.europe-west1.firebasedatabase.app/")
+        rootNode =
+            FirebaseDatabase.getInstance("https://ekg-app-f4d09-default-rtdb.europe-west1.firebasedatabase.app/")
         reference = rootNode.getReference("users")
 
         val name = registeredName.editText?.text.toString()
@@ -145,16 +179,22 @@ class Registration : AppCompatActivity() {
 
 
     private fun dataTransferToProfileView(userName: String) {
-        val userReference : Query = reference.orderByChild("userName").equalTo(userName)
+        val userReference: Query = reference.orderByChild("userName").equalTo(userName)
 
         userReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-                    val passwordFromDB : String = snapshot.child(userName).child("password").getValue(String::class.java).toString()
-                    val nameFromDB : String? = snapshot.child(userName).child("name").getValue(String::class.java)
-                    val usernameFromDB : String? = snapshot.child(userName).child("username").getValue(String::class.java)
-                    val phoneNoFromDB : String? = snapshot.child(userName).child("phoneNo").getValue(String::class.java)
-                    val emailFromDB : String? = snapshot.child(userName).child("email").getValue(String::class.java)
+                    val passwordFromDB: String =
+                        snapshot.child(userName).child("password").getValue(String::class.java)
+                            .toString()
+                    val nameFromDB: String? =
+                        snapshot.child(userName).child("name").getValue(String::class.java)
+                    val usernameFromDB: String? =
+                        snapshot.child(userName).child("username").getValue(String::class.java)
+                    val phoneNoFromDB: String? =
+                        snapshot.child(userName).child("phoneNo").getValue(String::class.java)
+                    val emailFromDB: String? =
+                        snapshot.child(userName).child("email").getValue(String::class.java)
 
                     val intent = Intent(this@Registration, UserProfile::class.java)
 
