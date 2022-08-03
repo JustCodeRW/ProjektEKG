@@ -131,15 +131,15 @@ class Registration : AppCompatActivity() {
 
     fun backToLogin(view: View) {
         val intent = Intent(this@Registration, Login::class.java)
-        val pair1: android.util.Pair<View, String> =
+        val pair1: Pair<View, String> =
             Pair.create(image, "logo_image_transition")
-        val pair2: android.util.Pair<View, String> =
+        val pair2: Pair<View, String> =
             Pair.create(logoText, "logo_text_transition")
-        val pair3: android.util.Pair<View, String> =
+        val pair3: Pair<View, String> =
             Pair.create(infoText, "logo_desc_transition")
-        val pair4: android.util.Pair<View, String> =
+        val pair4: Pair<View, String> =
             Pair.create(registeredUsername, "username_transition")
-        val pair5: android.util.Pair<View, String> =
+        val pair5: Pair<View, String> =
             Pair.create(registeredPassword, "password_transition")
 
         val options = ActivityOptions.makeSceneTransitionAnimation(
