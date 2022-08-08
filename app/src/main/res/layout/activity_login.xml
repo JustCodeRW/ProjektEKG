@@ -11,7 +11,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <ImageView
@@ -19,14 +19,15 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:src="@drawable/ekg_monitor"
-            android:transitionName="logo_image_transition" />
+            android:transitionName="logo_image_transition"
+            android:contentDescription="@string/heartImage" />
 
         <TextView
             android:id="@+id/logo_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/bungee"
-            android:text="Smart-EKG"
+            android:text="@string/smart_ekg"
             android:textColor="@color/black"
             android:textSize="40sp"
             android:transitionName="logo_text_transition" />
@@ -35,9 +36,9 @@
             android:id="@+id/infoText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign in to continue"
-            android:textSize="18sp"
+            android:text="@string/sign_in_to_continue"
             android:textColor="#000"
+            android:textSize="18sp"
             android:transitionName="logo_desc_transition" />
 
         <LinearLayout
@@ -52,7 +53,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Username"
+                android:hint="@string/username"
                 android:textColorHint="#585858"
                 app:boxStrokeColor="#000"
                 app:hintTextColor="#000">
@@ -60,8 +61,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:transitionName="username_transition"
-                    android:textColor="#000"/>
+                    android:textColor="#000"
+                    android:transitionName="username_transition" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -69,9 +70,9 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:textColorHint="#585858"
-                app:boxStrokeColor= "#000"
+                app:boxStrokeColor="#000"
                 app:hintTextColor="#000"
                 app:passwordToggleEnabled="true">
 
@@ -79,19 +80,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
-                    android:transitionName="password_transition"
-                    android:textColor="#000"/>
+                    android:textColor="#000"
+                    android:transitionName="password_transition" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/resetPasswordBtn"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:layout_margin="5dp"
                 android:background="@android:color/transparent"
                 android:elevation="0dp"
-                android:text="Forget Password?"
+                android:text="@string/forget_password"
                 android:textColor="#000" />
 
             <Button
@@ -101,8 +102,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:background="@color/black"
-                android:onClick="loginUser"
-                android:text="Start"
+                android:text="@string/start"
                 android:textColor="#fff"
                 android:transitionName="startBtn_transition"
                 app:backgroundTint="@null" />
@@ -111,11 +111,11 @@
                 android:id="@+id/registrationBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:layout_margin="5dp"
                 android:background="@android:color/transparent"
                 android:elevation="0dp"
-                android:text="New user? Sign UP"
+                android:text="@string/new_user_sign_up"
                 android:textColor="#000"
                 android:transitionName="signIn_transition" />
         </LinearLayout>

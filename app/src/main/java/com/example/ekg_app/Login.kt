@@ -1,63 +1,27 @@
 package com.example.ekg_app
 
-import android.Manifest.permission
-import android.app.Activity
 import android.app.ActivityOptions
 import android.app.AlertDialog
-import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothManager
-import android.bluetooth.le.ScanCallback
-import android.bluetooth.le.ScanResult
-import android.bluetooth.le.ScanSettings
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
-import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import com.example.ekg_app.databinding.ActivityLoginBinding
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.*
-import kotlin.system.exitProcess
 import android.util.Pair as UtilPair
 
-private const val ENABLE_BLUETOOTH_REQUEST_CODE = 1
-private const val LOCATION_PERMISSION_REQUEST_CODE = 2
 
 class Login : AppCompatActivity() {
     private lateinit var username: TextInputLayout
     private lateinit var password: TextInputLayout
-    private lateinit var buttonLocation: Button
-
-
-    private val bleScanner by  lazy {
-        bluetoothAdapter.bluetoothLeScanner
-    }
-
-    private val scanSettings = ScanSettings.Builder()
-        .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build()
-
-    private val bluetoothAdapter: BluetoothAdapter by lazy {
-        val bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-        bluetoothManager.adapter
-    }
-
-    private var isScanning = false
-        set(value) {
-            field = value
-            runOnUiThread {buttonLocation.text = if (value) "Stop Scan" else "Start Scan"}
-        }
+    private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,15 +37,11 @@ class Login : AppCompatActivity() {
 
         val loginBtn: Button = findViewById(R.id.loginBtn)
         val buttonLoadRegistration: Button = findViewById(R.id.registrationBtn)
-        buttonLocation = findViewById(R.id.resetPasswordBtn)
 
-        buttonLocation.setOnClickListener {
-            if (isScanning) {
-                stopBleScan()
-            } else {
-                startBleScan()
-            }
-        }
+//        binding = ActivityLoginBinding.inflate(layoutInflater)
+//        val view = binding.root
+//        setContentView(view)
+        loginBtn.setOnClickListener {loginUser()}
 
         buttonLoadRegistration.setOnClickListener {
             val intent = Intent(this@Login, Registration::class.java)
@@ -141,130 +101,20 @@ class Login : AppCompatActivity() {
                 startActivity(intent, options.toBundle())
             }
         }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            requestMultiplePermissions.launch(
-                arrayOf(
-                    permission.BLUETOOTH_CONNECT,
-                    permission.BLUETOOTH_SCAN
-                )
-            )
-        } else {
-            onResume()
-        }
     }
 
-    //Bluetooth
-    private val scanCallback = object : ScanCallback() {
-        override fun onScanResult(callbackType: Int, result: ScanResult?) {
-            if (result != null) {
-                with(result.device) {
-                    Log.i("ScanCallback", "Found BLE device! Name: ${name?: "Unnamed"}, address: $address")
-                }
-            }
-        }
-    }
-
-    private var requestBluetooth =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                //granted
-                val data: Intent? = result.data
-                promptEnableBluetooth()
-            } else {
-                //
-            }
-        }
-
-    private var requestMultiplePermissions =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            permissions.entries.forEach {
-                Log.d("test006", "${it.key} = ${it.value}")
-            }
-        }
-
-    override fun onResume() {
-        super.onResume()
-        if (!bluetoothAdapter.isEnabled) {
-            promptEnableBluetooth()
-        }
-    }
-
-    private fun promptEnableBluetooth() {
-        if (!bluetoothAdapter.isEnabled) {
-            val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-            requestBluetooth.launch(enableBtIntent)
-        }
-    }
-
-    //Location
-    private val isLocationPermissionGranted get() = hasPermission(permission.ACCESS_FINE_LOCATION)
-
-    private fun Context.hasPermission(permissionType: String): Boolean {
-        return ContextCompat.checkSelfPermission(
-            this,
-            permissionType
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun startBleScan() {
-        Log.d("Button pressed", "Start Location ")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !isLocationPermissionGranted) {
-            requestLocationPermission()
-        } else {
-            bleScanner.startScan(null, scanSettings, scanCallback)
-            isScanning = true
-        }
-    }
-
-    private fun stopBleScan() {
-        bleScanner.stopScan(scanCallback)
-        isScanning = false
-    }
-
-    private fun requestLocationPermission() {
-        if (isLocationPermissionGranted) {
-            return
-        }
-
-        val dialogBuilder = AlertDialog.Builder(this)
-        dialogBuilder.setTitle("Location permission required")
-            .setMessage("To function properly and Scan for BLE Devices is access to the location necessary. ")
-            .setCancelable(false)
-            .setPositiveButton("Okay") { _, _ ->
-     /*           if (!isLocationPermissionGranted) {
-                    val intent = Intent()
-                    intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                    val uri = Uri.fromParts("package", this.packageName, null)
-                    intent.data = uri
-                    startActivity(intent)
-                }*/
-                requestPermission(permission.ACCESS_FINE_LOCATION, LOCATION_PERMISSION_REQUEST_CODE)
-            }
-        val alertDialog = dialogBuilder.create()
+    override fun onBackPressed() {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage("Are you sure to Exit? ")
+            .setCancelable(true)
+            .setNegativeButton("No", DialogInterface.OnClickListener { dialogInterface, i ->
+                dialogInterface.cancel()
+            })
+            .setPositiveButton("Exit ", DialogInterface.OnClickListener { _, _ ->
+                finishAffinity()
+            })
+        val alertDialog = builder.create()
         alertDialog.show()
-    }
-
-    private fun Activity.requestPermission(permission: String, requestCode: Int) {
-        ActivityCompat.requestPermissions(this, arrayOf(permission), requestCode)
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            LOCATION_PERMISSION_REQUEST_CODE -> {
-                Log.d("Permission: ", grantResults[0].toString())
-                if (grantResults.firstOrNull() == PackageManager.PERMISSION_DENIED) {
-                    requestLocationPermission()
-                } else {
-                    startBleScan()
-                }
-            }
-        }
     }
 
     private fun validateUserName(): Boolean {
@@ -293,7 +143,7 @@ class Login : AppCompatActivity() {
         }
     }
 
-    fun loginUser(view: View) {
+    private fun loginUser() {
         if (!validateUserName() or !validatePassword()) {
             return
         } else {
@@ -337,13 +187,15 @@ class Login : AppCompatActivity() {
                             snapshot.child(userEnteredUsername).child("email")
                                 .getValue(String::class.java)
 
-                        val intent = Intent(applicationContext, UserProfile::class.java)
+                        val intent = Intent(applicationContext, BleAndLocationConnection::class.java)
 
+                     /*   TODO: Replace to other method or class?
                         intent.putExtra("name", nameFromDB)
                         intent.putExtra("username", usernameFromDB)
                         intent.putExtra("email", emailFromDB)
                         intent.putExtra("phoneNo", phoneNoFromDB)
                         intent.putExtra("password", passwordFromDB)
+                    */
 
                         startActivity(intent)
                     } else {
@@ -364,20 +216,5 @@ class Login : AppCompatActivity() {
                 print(error.message)
             }
         })
-
-    }
-
-    override fun onBackPressed() {
-        val builder = AlertDialog.Builder(this)
-        builder.setMessage("Are you sure to Exit? ")
-            .setCancelable(true)
-            .setNegativeButton("No", DialogInterface.OnClickListener { dialogInterface, i ->
-                dialogInterface.cancel()
-            })
-            .setPositiveButton("Exit ", DialogInterface.OnClickListener { _, _ ->
-                finishAffinity()
-            })
-        val alertDialog = builder.create()
-        alertDialog.show()
     }
 }

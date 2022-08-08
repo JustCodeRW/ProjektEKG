@@ -31,20 +31,18 @@ class UserProfile : AppCompatActivity() {
 
     private fun showAllUserData() {
         val intent: Intent = intent
-        val user_Name = intent.getStringExtra("name")
-        val user_Username = intent.getStringExtra("username")
-        val user_Email = intent.getStringExtra("email")
-        val user_PhoneNo = intent.getStringExtra("phoneNo")
-        val user_Password = intent.getStringExtra("password")
+        val userFullName = intent.getStringExtra("name")
+        val userName = intent.getStringExtra("username")
+        val userEmail = intent.getStringExtra("email")
+        val userPhoneNo = intent.getStringExtra("phoneNo")
+        val userPassword = intent.getStringExtra("password")
 
-        fullName.editText?.setText(user_Name)
-        email.editText?.setText(user_Email)
-        phoneNo.editText?.setText(user_PhoneNo)
-        password.editText?.setText(user_Password)
-        fullNameLabel.text = user_Name
-        usernameLabel.text = user_Username
+        fullName.editText?.setText(userFullName)
+        email.editText?.setText(userEmail)
+        phoneNo.editText?.setText(userPhoneNo)
+        password.editText?.setText(userPassword)
+        fullNameLabel.text = userFullName
+        usernameLabel.text = userName
 
     }
-
-
 }

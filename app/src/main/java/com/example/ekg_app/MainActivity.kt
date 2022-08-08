@@ -3,25 +3,23 @@ package com.example.ekg_app
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.view.WindowInsets
-import android.view.WindowInsetsController
-import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Pair as UtilPair
 
-class MainActivity : AppCompatActivity() {
+private const val  SPLASH_SCREEN = 3000
 
-    var topAnimation : Animation? = null
-    var bottomAnimation : Animation? = null
-    private val  SPLASH_SCREEN = 3000
+class MainActivity : AppCompatActivity() {
+    private var topAnimation : Animation? = null
+    private var bottomAnimation : Animation? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,10 +39,8 @@ class MainActivity : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed({
             val intent = Intent(this@MainActivity, Login::class.java)
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val options = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity, UtilPair.create(image, "logo_image_transition"), UtilPair.create(logo, "logo_text_transition"))
-                startActivity(intent, options.toBundle())
-            }
+            val options = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity, UtilPair.create(image, "logo_image_transition"), UtilPair.create(logo, "logo_text_transition"))
+            startActivity(intent, options.toBundle())
 
         }, SPLASH_SCREEN.toLong())
 
