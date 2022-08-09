@@ -11,24 +11,35 @@ import android.bluetooth.le.ScanResult
 import android.bluetooth.le.ScanSettings
 import android.content.Context
 import android.content.Intent
+import android.content.IntentSender
 import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
+import com.google.android.gms.tasks.OnFailureListener
+import java.lang.Exception
+
 
 private const val LOCATION_PERMISSION_REQUEST_CODE = 2
 
 class BleAndLocationConnection : AppCompatActivity() {
-    private lateinit var scanButton : Button
+    private lateinit var scanButton: Button
+    private lateinit var locationManager: LocationManager
+
     private val scanResults = mutableListOf<ScanResult>()
+    private var gpsStatus = false
 
     private val scanResultsAdapter: ScanResultsAdapter by lazy {
         ScanResultsAdapter(scanResults) {
@@ -56,13 +67,16 @@ class BleAndLocationConnection : AppCompatActivity() {
             runOnUiThread { scanButton.text = if (value) "Stop Scan" else "Start Scan" }
         }
 
-    private val recyclerview: RecyclerView = findViewById(R.id.scan_results_recycler_view)
+    private lateinit var recyclerview: RecyclerView
 
     private val isLocationPermissionGranted get() = hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ble_and_location_connection)
+
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        gpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
 
         scanButton = findViewById(R.id.scanButton)
         scanButton.setOnClickListener {
@@ -81,17 +95,21 @@ class BleAndLocationConnection : AppCompatActivity() {
                 )
             )
         }
+        recyclerview = findViewById(R.id.scan_results_recycler_view)
 
         setUpRecyclerView()
     }
 
     override fun onResume() {
         super.onResume()
-        if (!bluetoothAdapter.isEnabled) {
-            promptEnableBluetooth()
-        }
         if (!isLocationPermissionGranted) {
             requestLocationPermission()
+        }
+
+        if (!bluetoothAdapter.isEnabled) {
+            promptEnableBluetooth()
+        } else if (!gpsStatus) {
+            enableLocation()
         }
     }
 
@@ -159,6 +177,35 @@ class BleAndLocationConnection : AppCompatActivity() {
         }
 
     //Location
+    private fun enableLocation() {
+        val locationRequest = LocationRequest.create()
+        locationRequest.priority = Priority.PRIORITY_HIGH_ACCURACY
+        locationRequest.interval = 10000
+        locationRequest.fastestInterval = 10000 / 2
+
+        val locationSettingsBuilder = LocationSettingsRequest.Builder()
+        locationSettingsBuilder.addLocationRequest(locationRequest)
+        locationSettingsBuilder.setAlwaysShow(true)
+
+        val settingsClient = LocationServices.getSettingsClient(this)
+
+        val task = settingsClient.checkLocationSettings(locationSettingsBuilder.build())
+        task.addOnSuccessListener(this) {
+            Log.i("GPS STATUS", "GPS IS ON")
+        }
+
+        task.addOnFailureListener(this) { e ->
+            Log.i("GPS STATUS", "GPS IS ON")
+            if (e is ResolvableApiException) {
+                try {
+                    e.startResolutionForResult(this@BleAndLocationConnection, 0x1)
+                } catch (sendIntentException: IntentSender.SendIntentException) {
+                    sendIntentException.printStackTrace()
+                }
+            }
+        }
+    }
+
     private fun startBleScan() {
         Log.d("Button pressed", "Start Location ")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !isLocationPermissionGranted) {
@@ -228,17 +275,17 @@ class BleAndLocationConnection : AppCompatActivity() {
         }
     }
 
-    /*private fun requestLocationPermission() {
-        if (isLocationPermissionGranted) {
-            return
-        }
+/*private fun requestLocationPermission() {
+    if (isLocationPermissionGranted) {
+        return
+    }
 
-        val dialogBuilder = AlertDialog.Builder(this)
-        dialogBuilder.setTitle("Location permission required")
-            .setMessage("To function properly and Scan for BLE Devices is access to the location necessary. ")
-            .setCancelable(false)
-            .setPositiveButton("Okay") { _, _ ->
-                *//*           if (!isLocationPermissionGranted) {
+    val dialogBuilder = AlertDialog.Builder(this)
+    dialogBuilder.setTitle("Location permission required")
+        .setMessage("To function properly and Scan for BLE Devices is access to the location necessary. ")
+        .setCancelable(false)
+        .setPositiveButton("Okay") { _, _ ->
+            *//*           if (!isLocationPermissionGranted) {
                                val intent = Intent()
                                intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
                                val uri = Uri.fromParts("package", this.packageName, null)

@@ -48,7 +48,7 @@ class ScanResultsAdapter(
 
     class ScanResultsViewHolder(
         private val view: View,
-        private val onClickListener: (device: ScanResult) -> Unit
+        private val onClickListener: ((device: ScanResult) -> Unit)
     ) : RecyclerView.ViewHolder(view) {
 
         @SuppressLint("MissingPermission")

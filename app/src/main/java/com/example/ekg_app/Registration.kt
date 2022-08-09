@@ -129,7 +129,7 @@ class Registration : AppCompatActivity() {
         }
     }
 
-    fun backToLogin(view: View) {
+    fun backToLogin() {
         val intent = Intent(this@Registration, Login::class.java)
         val pair1: Pair<View, String> =
             Pair.create(image, "logo_image_transition")
@@ -153,7 +153,7 @@ class Registration : AppCompatActivity() {
         startActivity(intent, options.toBundle())
     }
 
-    fun registerUser(view: View) {
+    fun registerUser() {
         if (!validateName() or !validateUserName() or !validateEmail() or !validatePhoneNo() or !validatePassword()) {
             return
         }

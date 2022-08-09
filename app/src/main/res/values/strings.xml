@@ -9,4 +9,13 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <string name="heartImage">Heart Image</string>
+    <string name="smart_ekg">Smart EKG</string>
+    <string name="sign_in_to_continue">Sign in to Continue</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="forget_password">Forget Password</string>
+    <string name="start">Start</string>
+    <string name="new_user_sign_up">New User? Sign up</string>
 </resources>
