@@ -3,8 +3,8 @@ package com.example.ekg_app
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanResult
@@ -16,7 +16,6 @@ import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
 import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
@@ -27,13 +26,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.*
-import com.google.android.gms.tasks.OnFailureListener
-import java.lang.Exception
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.Priority
 
 
 private const val LOCATION_PERMISSION_REQUEST_CODE = 2
 
+@SuppressLint("MissingPermission")
 class BleAndLocationConnection : AppCompatActivity() {
     private lateinit var scanButton: Button
     private lateinit var locationManager: LocationManager
@@ -42,9 +43,13 @@ class BleAndLocationConnection : AppCompatActivity() {
     private var gpsStatus = false
 
     private val scanResultsAdapter: ScanResultsAdapter by lazy {
-        ScanResultsAdapter(scanResults) {
+        ScanResultsAdapter(scanResults) { result ->
             if (isScanning) {
                 stopBleScan()
+            }
+            with(result.device) {
+                Log.w("ScanResultAdapter", "Connecting to %address")
+                BleConnectionManager.connect(this, this@BleAndLocationConnection)
             }
         }
     }
@@ -95,13 +100,14 @@ class BleAndLocationConnection : AppCompatActivity() {
                 )
             )
         }
-        recyclerview = findViewById(R.id.scan_results_recycler_view)
 
+        recyclerview = findViewById(R.id.scan_results_recycler_view)
         setUpRecyclerView()
     }
 
     override fun onResume() {
         super.onResume()
+        BleConnectionManager.registerListener(connectionEventListener)
         if (!isLocationPermissionGranted) {
             requestLocationPermission()
         }
@@ -271,7 +277,28 @@ class BleAndLocationConnection : AppCompatActivity() {
         }
 
         override fun onScanFailed(errorCode: Int) {
-            Log.e("ScanCallBack", "onScanFailed: code $errorCode")
+            Log.e("ScanCallBack Failed", "onScanFailed: code $errorCode")
+        }
+    }
+
+    private val connectionEventListener by lazy {
+        ConnectionEventListener().apply {
+            onConnectionSetupComplete = {gatt ->
+                Intent(this@BleAndLocationConnection, RecordScreen::class.java).also {
+                    it.putExtra(BluetoothDevice.EXTRA_DEVICE, gatt.device)
+                    startActivity(it)
+                }
+                BleConnectionManager.unregisterListener(this)
+            }
+          /*  onDisconnect = {
+                runOnUiThread {
+                    alert {
+                        title = "Disconnected"
+                        message = "Disconnected or unable to connect to device."
+                        postiveButton("OK"){}
+                    }.show()
+                }
+            }*/
         }
     }
 

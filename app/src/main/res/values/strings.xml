@@ -18,4 +18,5 @@
     <string name="forget_password">Forget Password</string>
     <string name="start">Start</string>
     <string name="new_user_sign_up">New User? Sign up</string>
+    <string name="ble_scan_button">Ble Scan Button</string>
 </resources>

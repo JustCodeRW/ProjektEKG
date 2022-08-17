@@ -12,7 +12,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.ekg_app.databinding.ActivityLoginBinding
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.*
 import android.util.Pair as UtilPair
@@ -21,7 +20,6 @@ import android.util.Pair as UtilPair
 class Login : AppCompatActivity() {
     private lateinit var username: TextInputLayout
     private lateinit var password: TextInputLayout
-    private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +36,6 @@ class Login : AppCompatActivity() {
         val loginBtn: Button = findViewById(R.id.loginBtn)
         val buttonLoadRegistration: Button = findViewById(R.id.registrationBtn)
 
-//        binding = ActivityLoginBinding.inflate(layoutInflater)
-//        val view = binding.root
-//        setContentView(view)
         loginBtn.setOnClickListener {loginUser()}
 
         buttonLoadRegistration.setOnClickListener {
