@@ -12,6 +12,7 @@ import java.lang.ref.WeakReference
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
+import kotlin.math.sign
 
 private const val GATT_MAX_MTU_SIZE = 517
 private const val GATT_MIN_MTU_SIZE = 23
@@ -80,7 +81,7 @@ object BleConnectionManager {
     }
 
     fun enableNotifications(device: BluetoothDevice, characteristic: BluetoothGattCharacteristic) {
-        if (device.isConnected()) {
+        if (device.isConnected() && (characteristic.isIndicatable() || characteristic.isNotifiable())) {
             enqueueOperation(EnableNotifications(device, characteristic.uuid))
         } else if (!device.isConnected()) {
             Log.e("Notification", "Not connected to ${device.address}, cannot enable notifications")
@@ -165,6 +166,37 @@ object BleConnectionManager {
                 }
             }
 
+            is EnableNotifications -> with(operation) {
+                gatt.findCharacteristic(characteristicUUID)?.let { characteristic ->
+                    val cccUuid = UUID.fromString("00002902-0000-1000-8000-00805F9B34FB")
+                    val payload = when {
+                        characteristic.isIndicatable() ->
+                            BluetoothGattDescriptor.ENABLE_INDICATION_VALUE
+                        characteristic.isNotifiable() ->
+                            BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
+                        else ->
+                            error("${characteristic.uuid} doesn't support notifications/indications")
+                    }
+
+                    characteristic.getDescriptor(cccUuid)?.let { cccDescriptor ->
+                        if (!gatt.setCharacteristicNotification(characteristic, true)) {
+                            Log.e("Notifications", "setCharacteristicNotification failed for ${characteristic.uuid}")
+                            signalEndOfOperation()
+                            return
+                        }
+
+                        cccDescriptor.value = payload
+                        gatt.writeDescriptor(cccDescriptor)
+                    }?:this@BleConnectionManager.run {
+                        Log.e("Notifications", "${characteristic.uuid} doesn't contain the CCC descriptor")
+                        signalEndOfOperation()
+                    }
+                }?: this@BleConnectionManager.run {
+                    Log.e("Notifications","Can't find $characteristicUUID! Failed to enable notifications")
+                    signalEndOfOperation()
+                }
+            }
+
             else -> {
                 Log.ERROR
                 return
@@ -227,8 +259,6 @@ object BleConnectionManager {
                 signalEndOfOperation()
             }
         }
-
-
 
         override fun onCharacteristicRead(
             gatt: BluetoothGatt,

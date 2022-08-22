@@ -11,4 +11,5 @@ class ConnectionEventListener {
     var onCharacteristicRead: ((BluetoothDevice, BluetoothGattCharacteristic) -> Unit)? = null
     var onDescriptorRead: ((BluetoothDevice, BluetoothGattDescriptor) -> Unit)? = null
     var onCharacteristicChanged: ((BluetoothDevice, BluetoothGattCharacteristic) -> Unit)? = null
+    var onNotificationsEnabled: ((BluetoothDevice, BluetoothGattCharacteristic) -> Unit)? = null
 }
