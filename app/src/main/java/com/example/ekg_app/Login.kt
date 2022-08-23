@@ -2,7 +2,6 @@ package com.example.ekg_app
 
 import android.app.ActivityOptions
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -56,32 +55,6 @@ class Login : AppCompatActivity() {
 
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                window.setDecorFitsSystemWindows(false)
-                val controller = window.insetsController
-                if (controller != null) {
-                    controller.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
-                } else {
-                    // All below using to hide navigation bar
-                    val currentApiVersion = Build.VERSION.SDK_INT
-                    val flags = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            or View.SYSTEM_UI_FLAG_FULLSCREEN
-                            or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
-
-                    // This work only for android 4.4+
-                    if (currentApiVersion >= Build.VERSION_CODES.KITKAT) {
-                        window.decorView.systemUiVisibility = flags
-                        val decorView = window.decorView
-                        decorView.setOnSystemUiVisibilityChangeListener { visibility: Int ->
-                            if (visibility and View.SYSTEM_UI_FLAG_FULLSCREEN == 0) {
-                                decorView.systemUiVisibility = flags
-                            }
-                        }
-                    }
-                }
-
                 val options = ActivityOptions.makeSceneTransitionAnimation(
                     this@Login,
                     pair1,
@@ -101,12 +74,12 @@ class Login : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
         builder.setMessage("Are you sure to Exit? ")
             .setCancelable(true)
-            .setNegativeButton("No", DialogInterface.OnClickListener { dialogInterface, i ->
+            .setNegativeButton("No") { dialogInterface, _ ->
                 dialogInterface.cancel()
-            })
-            .setPositiveButton("Exit ", DialogInterface.OnClickListener { _, _ ->
+            }
+            .setPositiveButton("Exit ") { _, _ ->
                 finishAffinity()
-            })
+            }
         val alertDialog = builder.create()
         alertDialog.show()
     }

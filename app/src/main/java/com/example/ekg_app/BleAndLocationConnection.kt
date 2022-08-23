@@ -186,7 +186,7 @@ class BleAndLocationConnection : AppCompatActivity() {
         }
 
         task.addOnFailureListener(this) { e ->
-            Log.i("GPS STATUS", "GPS IS ON")
+            Log.i("GPS STATUS", "GPS IS OFF")
             if (e is ResolvableApiException) {
                 try {
                     e.startResolutionForResult(this@BleAndLocationConnection, 0x1)
@@ -270,7 +270,7 @@ class BleAndLocationConnection : AppCompatActivity() {
                     alert {
                         title = "Disconnected"
                         message = "Disconnected or unable to connect to device."
-                        postiveButton("OK"){}
+                        positiveButton("OK"){}
                     }.show()
                 }
             }*/

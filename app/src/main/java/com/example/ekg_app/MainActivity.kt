@@ -6,7 +6,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.View
 import android.view.WindowInsets
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -44,33 +43,9 @@ class MainActivity : AppCompatActivity() {
 
         }, SPLASH_SCREEN.toLong())
 
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.setDecorFitsSystemWindows(false)
-            val controller = window.insetsController
-            if (controller != null) {
-                controller.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
-            } else {
-                // All below using to hide navigation bar
-                val currentApiVersion = Build.VERSION.SDK_INT
-                val flags = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        or View.SYSTEM_UI_FLAG_FULLSCREEN
-                        or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
-
-                // This work only for android 4.4+
-                if (currentApiVersion >= Build.VERSION_CODES.KITKAT) {
-                    window.decorView.systemUiVisibility = flags
-                    val decorView = window.decorView
-                    decorView.setOnSystemUiVisibilityChangeListener { visibility: Int ->
-                        if (visibility and View.SYSTEM_UI_FLAG_FULLSCREEN == 0) {
-                            decorView.systemUiVisibility = flags
-                        }
-                    }
-                }
-            }
+            window.insetsController?.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
         }
     }
 }

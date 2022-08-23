@@ -41,6 +41,53 @@ class Registration : AppCompatActivity() {
         infoText = findViewById(R.id.infoText)
     }
 
+    fun backToLogin(view: View) {
+        val intent = Intent(this@Registration, Login::class.java)
+        val pair1: Pair<View, String> =
+            Pair.create(image, "logo_image_transition")
+        val pair2: Pair<View, String> =
+            Pair.create(logoText, "logo_text_transition")
+        val pair3: Pair<View, String> =
+            Pair.create(infoText, "logo_desc_transition")
+        val pair4: Pair<View, String> =
+            Pair.create(registeredUsername, "username_transition")
+        val pair5: Pair<View, String> =
+            Pair.create(registeredPassword, "password_transition")
+
+        val options = ActivityOptions.makeSceneTransitionAnimation(
+            this@Registration,
+            pair1,
+            pair2,
+            pair3,
+            pair4,
+            pair5,
+        )
+        startActivity(intent, options.toBundle())
+    }
+
+    fun registerUser(view: View) {
+        if (!validateName() or !validateUserName() or !validateEmail() or !validatePhoneNo() or !validatePassword()) {
+            return
+        }
+
+        //save data in firebase (database) on button click
+        rootNode =
+            FirebaseDatabase.getInstance("https://ekg-app-f4d09-default-rtdb.europe-west1.firebasedatabase.app/")
+        reference = rootNode.getReference("users")
+
+        val name = registeredName.editText?.text.toString()
+        val userName = registeredUsername.editText?.text.toString()
+        val email = registeredEmail.editText?.text.toString()
+        val phoneNo = registeredPhoneNo.editText?.text.toString()
+        val password = registeredPassword.editText?.text.toString()
+
+        val dataModel = UserDataModel(name, userName, email, phoneNo, password)
+
+        reference.child(userName).setValue(dataModel)
+
+        dataTransferToProfileView(userName)
+    }
+
     private fun validateName(): Boolean {
         val value = registeredName.editText?.text.toString()
 
@@ -120,60 +167,14 @@ class Registration : AppCompatActivity() {
             registeredPassword.error = "Field cannot be empty"
             false
         } else if (!value.matches(passwordPattern.toRegex())) {
-            registeredPassword.error = "Password is to weak need a at least 4 characters and one symbol"
+            registeredPassword.error =
+                "Password is to weak need a at least 4 characters and one symbol"
             false
         } else {
             registeredPassword.error = null
             registeredPassword.isErrorEnabled = false
             true
         }
-    }
-
-    fun backToLogin() {
-        val intent = Intent(this@Registration, Login::class.java)
-        val pair1: Pair<View, String> =
-            Pair.create(image, "logo_image_transition")
-        val pair2: Pair<View, String> =
-            Pair.create(logoText, "logo_text_transition")
-        val pair3: Pair<View, String> =
-            Pair.create(infoText, "logo_desc_transition")
-        val pair4: Pair<View, String> =
-            Pair.create(registeredUsername, "username_transition")
-        val pair5: Pair<View, String> =
-            Pair.create(registeredPassword, "password_transition")
-
-        val options = ActivityOptions.makeSceneTransitionAnimation(
-            this@Registration,
-            pair1,
-            pair2,
-            pair3,
-            pair4,
-            pair5,
-        )
-        startActivity(intent, options.toBundle())
-    }
-
-     fun registerUser() {
-        if (!validateName() or !validateUserName() or !validateEmail() or !validatePhoneNo() or !validatePassword()) {
-            return
-        }
-
-        //save data in firebase (database) on button click
-        rootNode =
-            FirebaseDatabase.getInstance("https://ekg-app-f4d09-default-rtdb.europe-west1.firebasedatabase.app/")
-        reference = rootNode.getReference("users")
-
-        val name = registeredName.editText?.text.toString()
-        val userName = registeredUsername.editText?.text.toString()
-        val email = registeredEmail.editText?.text.toString()
-        val phoneNo = registeredPhoneNo.editText?.text.toString()
-        val password = registeredPassword.editText?.text.toString()
-
-        val dataModel = UserDataModel(name, userName, email, phoneNo, password)
-
-        reference.child(userName).setValue(dataModel)
-
-        dataTransferToProfileView(userName)
     }
 
 

@@ -19,4 +19,17 @@
     <string name="start">Start</string>
     <string name="new_user_sign_up">New User? Sign up</string>
     <string name="ble_scan_button">Ble Scan Button</string>
+    <string name="view_for_app_main_icon">view for App main icon</string>
+    <string name="already_have_an_account_login">Already have an account ? LogIn</string>
+    <string name="email">Email</string>
+    <string name="phone_no">Phone No</string>
+    <string name="full_name">Full Name</string>
+    <string name="signup_to_start_tracking">SignUp to start tracking</string>
+    <string name="welcome">Welcome</string>
+    <string name="test">Test</string>
+    <string name="update">Update</string>
+    <string name="tel_Number">+49- 178199940</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="testMail">TestEmail@gmail.com</string>
+    <string name="testName">Mustermann</string>
 </resources>

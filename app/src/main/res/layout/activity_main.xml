@@ -19,7 +19,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/view_for_app_main_icon" />
 
     <TextView
         android:id="@+id/appName"
@@ -27,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="65dp"
         android:fontFamily="@font/bangers"
-        android:text="Smart-EKG"
+        android:text="@string/smart_ekg"
         android:textAlignment="center"
         android:textColor="#FFF"
         android:textSize="70sp"
