@@ -1,4 +1,4 @@
-package com.example.ekg_app
+package com.example.ekg_app.ble
 
 import android.annotation.SuppressLint
 import android.bluetooth.*
@@ -17,7 +17,8 @@ object BleConnectionManager {
     private val operationQueue = ConcurrentLinkedQueue<BleOperationType>()
     private var pendingOperation: BleOperationType? = null
 
-    fun serviceOnDevice(device: BluetoothDevice): List<BluetoothGattService>? = deviceGattMap[device]?.services
+    fun serviceOnDevice(device: BluetoothDevice): List<BluetoothGattService>? =
+        deviceGattMap[device]?.services
 
     fun registerListener(listener: ConnectionEventListener) {
         if (listeners.map { it.get() }.contains(listener)) {
@@ -28,7 +29,7 @@ object BleConnectionManager {
         Log.d("Listeners", "Added listener $listener, ${listeners.size} listeners total")
     }
 
-    fun unregisterListener(listener: ConnectionEventListener){
+    fun unregisterListener(listener: ConnectionEventListener) {
         var toRemove: WeakReference<ConnectionEventListener>? = null
         listeners.forEach {
             if (it.get() == listener) {
@@ -139,26 +140,26 @@ object BleConnectionManager {
             }
 
             is CharacteristicRead -> with(operation) {
-                gatt.findCharacteristic(characteristicUUID)?.let { characteristic ->
+                gatt.findCharacteristic(characteristicUuid)?.let { characteristic ->
                     gatt.readCharacteristic(characteristic)
                 } ?: this@BleConnectionManager.run {
-                    Log.e("Operation Read", "Can`t find $characteristicUUID to read from")
+                    Log.e("Operation Read", "Can`t find $characteristicUuid to read from")
                     signalEndOfOperation()
                 }
             }
 
             is DescriptorRead -> with(operation) {
-                gatt.findDescriptor(descriptorUUID)?.let { descriptor ->
+                gatt.findDescriptor(descriptorUuid)?.let { descriptor ->
                     gatt.readDescriptor(descriptor)
                 } ?: this@BleConnectionManager.run {
-                    Log.e("Descriptor Read", "Can´t find $descriptorUUID to read from")
+                    Log.e("Descriptor Read", "Can´t find $descriptorUuid to read from")
                     signalEndOfOperation()
                 }
             }
 
             is EnableNotifications -> with(operation) {
-                gatt.findCharacteristic(characteristicUUID)?.let { characteristic ->
-                    val cccUuid = UUID.fromString("00002902-0000-1000-8000-00805F9B34FB")
+                gatt.findCharacteristic(characteristicUuid)?.let { characteristic ->
+                    val cccUuid = UUID.fromString(CCC_DESCRIPTOR_UUID)
                     val payload = when {
                         characteristic.isIndicatable() ->
                             BluetoothGattDescriptor.ENABLE_INDICATION_VALUE
@@ -170,19 +171,28 @@ object BleConnectionManager {
 
                     characteristic.getDescriptor(cccUuid)?.let { cccDescriptor ->
                         if (!gatt.setCharacteristicNotification(characteristic, true)) {
-                            Log.e("Notifications", "setCharacteristicNotification failed for ${characteristic.uuid}")
+                            Log.e(
+                                "Notifications",
+                                "setCharacteristicNotification failed for ${characteristic.uuid}"
+                            )
                             signalEndOfOperation()
                             return
                         }
 
                         cccDescriptor.value = payload
                         gatt.writeDescriptor(cccDescriptor)
-                    }?:this@BleConnectionManager.run {
-                        Log.e("Notifications", "${characteristic.uuid} doesn't contain the CCC descriptor")
+                    } ?: this@BleConnectionManager.run {
+                        Log.e(
+                            "Notifications",
+                            "${characteristic.uuid} doesn't contain the CCC descriptor"
+                        )
                         signalEndOfOperation()
                     }
-                }?: this@BleConnectionManager.run {
-                    Log.e("Notifications","Can't find $characteristicUUID! Failed to enable notifications")
+                } ?: this@BleConnectionManager.run {
+                    Log.e(
+                        "Notifications",
+                        "Can't find $characteristicUuid! Failed to enable notifications"
+                    )
                     signalEndOfOperation()
                 }
             }
@@ -316,79 +326,5 @@ object BleConnectionManager {
         }
     }
 
-    private fun BluetoothGatt.findCharacteristic(uuid: UUID): BluetoothGattCharacteristic? {
-        services?.forEach { service ->
-            service.characteristics?.firstOrNull { characteristic ->
-                characteristic.uuid == uuid
-            }?.let { matchingCharacteristic ->
-                return matchingCharacteristic
-            }
-        }
-        return null
-    }
-
-    private fun BluetoothGatt.findDescriptor(uuid: UUID): BluetoothGattDescriptor? {
-        services.forEach { service ->
-            service.characteristics.forEach { characteristic ->
-                characteristic.descriptors?.firstOrNull { descriptor ->
-                    descriptor.uuid == uuid
-                }?.let { matchingDescriptor ->
-                    return matchingDescriptor
-                }
-            }
-        }
-        return null
-    }
-
-    private fun BluetoothGatt.printGattTable() {
-        if (services.isEmpty()) {
-            Log.i(
-                "printGattTable",
-                "No service and characteristic available, call discoverServices() first?"
-            )
-            return
-        }
-
-        services.forEach { service ->
-            val characteristicTable = service.characteristics.joinToString(
-                separator = "\n|--",
-                prefix = "|--"
-            ) { it.uuid.toString() }
-            Log.i(
-                "printGattTable",
-                "\nServices ${service.uuid}\nCharacteristics:\n$characteristicTable"
-            )
-        }
-    }
-
-    //BluetoothGattCharacteristic
-     fun BluetoothGattCharacteristic.containsProperty(property: Int): Boolean {
-        return properties and property != 0
-    }
-
-     fun BluetoothGattCharacteristic.isReadable(): Boolean =
-        containsProperty(BluetoothGattCharacteristic.PROPERTY_READ)
-
-    fun BluetoothGattCharacteristic.isNotifiable(): Boolean =
-        containsProperty(BluetoothGattCharacteristic.PROPERTY_NOTIFY)
-
-    fun BluetoothGattCharacteristic.isIndicatable(): Boolean =
-        containsProperty(BluetoothGattCharacteristic.PROPERTY_INDICATE)
-
-     fun BluetoothGattCharacteristic.isWritable(): Boolean =
-        containsProperty(BluetoothGattCharacteristic.PROPERTY_WRITE)
-
-     fun BluetoothGattCharacteristic.isWriteableWithoutResponse(): Boolean =
-        containsProperty(BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE)
-
-     fun BluetoothGattDescriptor.isReadable(): Boolean =
-        containsPermission(BluetoothGattDescriptor.PERMISSION_READ)
-
-     fun BluetoothGattDescriptor.isWritable(): Boolean =
-        containsPermission(BluetoothGattDescriptor.PERMISSION_WRITE)
-
-     fun BluetoothGattDescriptor.containsPermission(permission: Int): Boolean =
-        permissions and permission != 0
-
-     fun BluetoothDevice.isConnected() = deviceGattMap.containsKey(this)
+    private fun BluetoothDevice.isConnected() = deviceGattMap.containsKey(this)
 }

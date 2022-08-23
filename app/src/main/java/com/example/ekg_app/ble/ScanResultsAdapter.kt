@@ -1,4 +1,4 @@
-package com.example.ekg_app
+package com.example.ekg_app.ble
 
 import android.annotation.SuppressLint
 import android.bluetooth.le.ScanResult
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ekg_app.R
 
 
 class ScanResultsAdapter(

@@ -16,7 +16,6 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.*
 import android.util.Pair as UtilPair
 
-
 class Login : AppCompatActivity() {
     private lateinit var username: TextInputLayout
     private lateinit var password: TextInputLayout
@@ -115,26 +114,26 @@ class Login : AppCompatActivity() {
     private fun validateUserName(): Boolean {
         val value: String = username.editText?.text.toString()
 
-        if (value.isEmpty()) {
+        return if (value.isEmpty()) {
             username.error = "Field cannot be empty"
-            return false
+            false
         } else {
             username.error = null
             username.isEnabled = false
-            return true
+            true
         }
     }
 
     private fun validatePassword(): Boolean {
         val value: String = password.editText?.text.toString()
 
-        if (value.isEmpty()) {
+        return if (value.isEmpty()) {
             password.error = "Field cannot be empty"
-            return false
+            false
         } else {
             password.error = null
             password.isErrorEnabled = false
-            return true
+            true
         }
     }
 

@@ -20,6 +20,7 @@ class Registration : AppCompatActivity() {
     private lateinit var registeredPhoneNo: TextInputLayout
     private lateinit var registeredPassword: TextInputLayout
     private lateinit var registeredUsername: TextInputLayout
+
     private lateinit var image: ImageView
     private lateinit var logoText: TextView
     private lateinit var infoText: TextView
@@ -38,7 +39,6 @@ class Registration : AppCompatActivity() {
         image = findViewById(R.id.logo_image)
         logoText = findViewById(R.id.logo_text)
         infoText = findViewById(R.id.infoText)
-
     }
 
     private fun validateName(): Boolean {
@@ -58,19 +58,19 @@ class Registration : AppCompatActivity() {
         val value: String = registeredUsername.editText?.text.toString()
         val noWhiteSpace = "\\A\\w{4,20}\\z"
 
-        if (value.isEmpty()) {
+        return if (value.isEmpty()) {
             registeredUsername.error = "Field cannot be empty"
-            return false
+            false
         } else if (value.length >= 15) {
             registeredUsername.error = "Username too long"
-            return false
+            false
         } else if (!value.matches(noWhiteSpace.toRegex())) {
             registeredUsername.error = "White Spaces are not allowed or username too short"
-            return false
+            false
         } else {
             registeredUsername.error = null
             registeredUsername.isErrorEnabled = false
-            return true
+            true
         }
     }
 
@@ -78,29 +78,29 @@ class Registration : AppCompatActivity() {
         val value = registeredEmail.editText?.text.toString()
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
 
-        if (value.isEmpty()) {
+        return if (value.isEmpty()) {
             registeredEmail.error = "Field cannot be empty"
-            return false
+            false
         } else if (!value.matches(emailPattern.toRegex())) {
             registeredEmail.error = "Invalid Email"
-            return false
+            false
         } else {
             registeredEmail.error = null
             registeredEmail.isErrorEnabled = false
-            return true
+            true
         }
     }
 
     private fun validatePhoneNo(): Boolean {
         val value: String = registeredPhoneNo.editText?.text.toString()
 
-        if (value.isEmpty()) {
+        return if (value.isEmpty()) {
             registeredPhoneNo.error = "Field cannot be empty"
-            return false
+            false
         } else {
             registeredPhoneNo.error = null
             registeredPhoneNo.isErrorEnabled = false
-            return true
+            true
         }
     }
 
@@ -116,16 +116,16 @@ class Registration : AppCompatActivity() {
                 ".{4,}" +               //at least 4 characters
                 "$"
 
-        if (value.isEmpty()) {
+        return if (value.isEmpty()) {
             registeredPassword.error = "Field cannot be empty"
-            return false
+            false
         } else if (!value.matches(passwordPattern.toRegex())) {
-            registeredPassword.error = "Password is to weak"
-            return false
+            registeredPassword.error = "Password is to weak need a at least 4 characters and one symbol"
+            false
         } else {
             registeredPassword.error = null
             registeredPassword.isErrorEnabled = false
-            return true
+            true
         }
     }
 
@@ -153,7 +153,7 @@ class Registration : AppCompatActivity() {
         startActivity(intent, options.toBundle())
     }
 
-    fun registerUser() {
+     fun registerUser() {
         if (!validateName() or !validateUserName() or !validateEmail() or !validatePhoneNo() or !validatePassword()) {
             return
         }
@@ -174,7 +174,6 @@ class Registration : AppCompatActivity() {
         reference.child(userName).setValue(dataModel)
 
         dataTransferToProfileView(userName)
-
     }
 
 

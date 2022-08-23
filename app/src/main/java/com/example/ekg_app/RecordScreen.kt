@@ -6,8 +6,10 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.example.ekg_app.BleConnectionManager.isNotifiable
-import com.example.ekg_app.BleConnectionManager.isReadable
+import com.example.ekg_app.ble.BleConnectionManager
+import com.example.ekg_app.ble.ConnectionEventListener
+import com.example.ekg_app.ble.isNotifiable
+import com.example.ekg_app.ble.isReadable
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry

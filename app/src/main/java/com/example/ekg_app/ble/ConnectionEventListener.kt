@@ -1,4 +1,4 @@
-package com.example.ekg_app
+package com.example.ekg_app.ble
 
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothGatt

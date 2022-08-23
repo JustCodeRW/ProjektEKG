@@ -25,6 +25,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.example.ekg_app.ble.BleConnectionManager
+import com.example.ekg_app.ble.ConnectionEventListener
+import com.example.ekg_app.ble.ScanResultsAdapter
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -138,23 +141,12 @@ class BleAndLocationConnection : AppCompatActivity() {
         }
     }
 
-    //view for (scanned) bluetooth devices
-    private fun setUpRecyclerView() {
-        recyclerview.apply {
-            adapter = scanResultsAdapter
-            layoutManager = LinearLayoutManager(
-                this@BleAndLocationConnection,
-                RecyclerView.VERTICAL,
-                false
-            )
-            isNestedScrollingEnabled = false
+    private var requestMultiplePermissions =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            permissions.entries.forEach {
+                Log.d("BLUETOOTH TEST", "${it.key} = ${it.value}")
+            }
         }
-
-        val animator = recyclerview.itemAnimator
-        if (animator is SimpleItemAnimator) {
-            animator.supportsChangeAnimations = false
-        }
-    }
 
     //Bluetooth
     private var requestBluetooth =
@@ -174,13 +166,6 @@ class BleAndLocationConnection : AppCompatActivity() {
             requestBluetooth.launch(enableBtIntent)
         }
     }
-
-    private var requestMultiplePermissions =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            permissions.entries.forEach {
-                Log.d("BLUETOOTH TEST", "${it.key} = ${it.value}")
-            }
-        }
 
     //Location
     private fun enableLocation() {
@@ -212,6 +197,24 @@ class BleAndLocationConnection : AppCompatActivity() {
         }
     }
 
+    //view for (scanned) bluetooth devices
+    private fun setUpRecyclerView() {
+        recyclerview.apply {
+            adapter = scanResultsAdapter
+            layoutManager = LinearLayoutManager(
+                this@BleAndLocationConnection,
+                RecyclerView.VERTICAL,
+                false
+            )
+            isNestedScrollingEnabled = false
+        }
+
+        val animator = recyclerview.itemAnimator
+        if (animator is SimpleItemAnimator) {
+            animator.supportsChangeAnimations = false
+        }
+    }
+
     private fun startBleScan() {
         Log.d("Button pressed", "Start Location ")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !isLocationPermissionGranted) {
@@ -219,40 +222,12 @@ class BleAndLocationConnection : AppCompatActivity() {
         } else {
             scanResults.clear()
             scanResultsAdapter.notifyDataSetChanged()
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.BLUETOOTH_SCAN
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return
-            }
             bleScanner.startScan(null, scanSettings, scanCallback)
             isScanning = true
         }
     }
 
     private fun stopBleScan() {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.BLUETOOTH_SCAN
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return
-        }
         bleScanner.stopScan(scanCallback)
         isScanning = false
     }
@@ -301,32 +276,6 @@ class BleAndLocationConnection : AppCompatActivity() {
             }*/
         }
     }
-
-/*private fun requestLocationPermission() {
-    if (isLocationPermissionGranted) {
-        return
-    }
-
-    val dialogBuilder = AlertDialog.Builder(this)
-    dialogBuilder.setTitle("Location permission required")
-        .setMessage("To function properly and Scan for BLE Devices is access to the location necessary. ")
-        .setCancelable(false)
-        .setPositiveButton("Okay") { _, _ ->
-            *//*           if (!isLocationPermissionGranted) {
-                               val intent = Intent()
-                               intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                               val uri = Uri.fromParts("package", this.packageName, null)
-                               intent.data = uri
-                               startActivity(intent)
-                           }*//*
-                requestPermission(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    LOCATION_PERMISSION_REQUEST_CODE
-                )
-            }
-        val alertDialog = dialogBuilder.create()
-        alertDialog.show()
-    }*/
 
     private fun requestLocationPermission() {
         requestPermission(

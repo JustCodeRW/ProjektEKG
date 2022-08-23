@@ -6,6 +6,4 @@ class UserDataModel(
     var email: String?,
     var phoneNo: String?,
     var password: String?
-) {
-
-}
+)
