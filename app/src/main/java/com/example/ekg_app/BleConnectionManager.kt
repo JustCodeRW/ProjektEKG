@@ -3,29 +3,19 @@ package com.example.ekg_app
 import android.annotation.SuppressLint
 import android.bluetooth.*
 import android.content.Context
-import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.util.Property
 import java.lang.ref.WeakReference
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
-import kotlin.math.sign
-
-private const val GATT_MAX_MTU_SIZE = 517
-private const val GATT_MIN_MTU_SIZE = 23
 
 object BleConnectionManager {
     private var listeners: MutableSet<WeakReference<ConnectionEventListener>> = mutableSetOf()
-
     private val deviceGattMap = ConcurrentHashMap<BluetoothDevice, BluetoothGatt>()
     private val operationQueue = ConcurrentLinkedQueue<BleOperationType>()
     private var pendingOperation: BleOperationType? = null
-
-    private val characteristicService = UUID.fromString("92fae7ae-1d8e-11ed-861d-0242ac120002")
-    private val characteristic = UUID.fromString("92fae9fc-1d8e-11ed-861d-0242ac120002")
 
     fun serviceOnDevice(device: BluetoothDevice): List<BluetoothGattService>? = deviceGattMap[device]?.services
 
@@ -325,14 +315,6 @@ object BleConnectionManager {
             }
         }
     }
-
-
-/*  private fun readData(characteristic: BluetoothGattCharacteristic) {
-      if (uuid.equals(characteristic.uuid)) {
-          val data = characteristic.value.toString()
-          Log.w("READED DATA", "DER WERT $data")
-      }
-  }*/
 
     private fun BluetoothGatt.findCharacteristic(uuid: UUID): BluetoothGattCharacteristic? {
         services?.forEach { service ->

@@ -24,42 +24,40 @@
             android:textColor="@color/black"
             android:textSize="38sp" />
 
-        <LinearLayout
+        <!--<LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="25dp"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="25dp"
                 android:src="@drawable/real_heart">
             </ImageView>
 
             <ImageView
-                android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="25dp"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="25dp"
                 android:src="@drawable/ic_lock">
             </ImageView>
 
             <ImageView
-                android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="50dp"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="50dp"
                 android:src="@drawable/heart">
             </ImageView>
-
-
-        </LinearLayout>
+        </LinearLayout>-->
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/lineChart"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="200dp"
             android:layout_marginTop="50dp">
         </com.github.mikephil.charting.charts.LineChart>
 
