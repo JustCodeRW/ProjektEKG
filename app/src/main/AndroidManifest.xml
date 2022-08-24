@@ -23,6 +23,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EKGApp">
         <activity
+            android:name=".MainMenu"
+            android:exported="true" />
+        <activity
             android:name=".BleAndLocationConnection"
             android:exported="true" />
         <activity

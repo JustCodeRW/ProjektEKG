@@ -155,13 +155,11 @@ class Login : AppCompatActivity() {
 
                         val intent = Intent(applicationContext, MainMenu::class.java)
 
-                     /*   TODO: Replace to other method or class?
                         intent.putExtra("name", nameFromDB)
                         intent.putExtra("username", usernameFromDB)
                         intent.putExtra("email", emailFromDB)
                         intent.putExtra("phoneNo", phoneNoFromDB)
                         intent.putExtra("password", passwordFromDB)
-                    */
 
                         startActivity(intent)
                     } else {

@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textfield.TextInputLayout
 
 class UserProfile : AppCompatActivity() {
@@ -25,7 +26,22 @@ class UserProfile : AppCompatActivity() {
         fullNameLabel = findViewById(R.id.full_name_label)
         usernameLabel = findViewById(R.id.username_label)
 
+        val menu: MaterialCardView = findViewById(R.id.menu)
+        val startScan: MaterialCardView = findViewById(R.id.startScan)
 
+        menu.setOnClickListener {
+            startActivity(Intent(this@UserProfile, MainMenu::class.java))
+        }
+
+        startScan.setOnClickListener {
+            startActivity(Intent(this@UserProfile, BleAndLocationConnection::class.java))
+        }
+
+        showAllUserData()
+    }
+
+    override fun onResume() {
+        super.onResume()
         showAllUserData()
     }
 

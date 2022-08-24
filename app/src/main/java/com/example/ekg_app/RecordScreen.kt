@@ -86,7 +86,7 @@ class RecordScreen : AppCompatActivity() {
 
         val backBtn: ImageButton = findViewById(R.id.backToMainPage)
         backBtn.setOnClickListener {
-            val backIntent = Intent(this@RecordScreen, UserProfile::class.java)
+            val backIntent = Intent(this@RecordScreen, MainMenu::class.java)
             BleConnectionManager.unregisterListener(connectionEventListener)
             BleConnectionManager.tearDownConnection(device)
             startActivity(backIntent)

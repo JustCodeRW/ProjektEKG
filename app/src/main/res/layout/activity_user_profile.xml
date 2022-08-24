@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserProfile">
+    tools:context=".UserProfile"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -57,6 +58,7 @@
             android:padding="20dp">
 
             <com.google.android.material.card.MaterialCardView
+                android:id = "@+id/menu"
                 android:layout_width="0dp"
                 android:layout_height="125dp"
                 android:layout_margin="10dp"
@@ -69,12 +71,6 @@
                     android:layout_height="match_parent"
                     android:padding="5dp">
 
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_centerHorizontal="true"
-                        android:src="@drawable/avatar" />
-
                     <TextView
                         android:id="@+id/menu_label"
                         android:layout_width="wrap_content"
@@ -84,41 +80,24 @@
                         android:includeFontPadding="false"
                         android:text="Menu"
                         android:textSize="20sp" />
-
-                    <TextView
-                        android:id="@+id/label_heart"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/menu_label"
-                        android:layout_centerHorizontal="true"
-                        android:includeFontPadding="false"
-                        android:text="Heart"
-                        android:textSize="14sp" />
-
-
                 </RelativeLayout>
 
 
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
+                android:id = "@+id/startScan"
                 android:layout_width="0dp"
                 android:layout_height="125dp"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="#E2883737"
+                app:cardBackgroundColor="#D32F2F"
                 app:cardElevation="10dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="5dp">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_centerHorizontal="true"
-                        android:src="@drawable/avatar" />
 
                     <TextView
                         android:id="@+id/start_label"
@@ -137,22 +116,18 @@
                         android:layout_below="@+id/start_label"
                         android:layout_centerHorizontal="true"
                         android:includeFontPadding="false"
-                        android:text="Ready"
+                        android:text="Scan"
                         android:textSize="14sp" />
-
-
                 </RelativeLayout>
-
-
             </com.google.android.material.card.MaterialCardView>
-
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="20dp"
+            android:background="@color/white">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/full_name_profile"

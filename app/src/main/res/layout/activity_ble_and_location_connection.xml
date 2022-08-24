@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:background="#6002EE"
+        android:background="@color/cardview_dark_background"
         android:text="@string/ble_scan_button"
         android:textColor="#fff"
         app:backgroundTint="@null"

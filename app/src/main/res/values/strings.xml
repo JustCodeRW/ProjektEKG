@@ -33,4 +33,7 @@
     <string name="testMail">TestEmail@gmail.com</string>
     <string name="testName">Mustermann</string>
     <string name="record_ekg">Record EKG</string>
+    <string name="user_profile">User Profile</string>
+    <string name="start_scan">Start Scan</string>
+    <string name="start_tracking_your_heart">Start tracking your heart</string>
 </resources>
