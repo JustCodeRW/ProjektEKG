@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.view.WindowInsets
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -154,7 +153,7 @@ class Login : AppCompatActivity() {
                             snapshot.child(userEnteredUsername).child("email")
                                 .getValue(String::class.java)
 
-                        val intent = Intent(applicationContext, BleAndLocationConnection::class.java)
+                        val intent = Intent(applicationContext, MainMenu::class.java)
 
                      /*   TODO: Replace to other method or class?
                         intent.putExtra("name", nameFromDB)

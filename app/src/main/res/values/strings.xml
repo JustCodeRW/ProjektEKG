@@ -32,4 +32,5 @@
     <string name="phone_number">Phone Number</string>
     <string name="testMail">TestEmail@gmail.com</string>
     <string name="testName">Mustermann</string>
+    <string name="record_ekg">Record EKG</string>
 </resources>

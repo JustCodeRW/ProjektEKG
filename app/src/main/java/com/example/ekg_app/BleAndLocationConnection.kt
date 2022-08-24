@@ -3,6 +3,7 @@ package com.example.ekg_app
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
@@ -258,22 +259,22 @@ class BleAndLocationConnection : AppCompatActivity() {
 
     private val connectionEventListener by lazy {
         ConnectionEventListener().apply {
-            onConnectionSetupComplete = {gatt ->
+            onConnectionSetupComplete = { gatt ->
                 Intent(this@BleAndLocationConnection, RecordScreen::class.java).also {
                     it.putExtra(BluetoothDevice.EXTRA_DEVICE, gatt.device)
                     startActivity(it)
                 }
                 BleConnectionManager.unregisterListener(this)
             }
-          /*  onDisconnect = {
-                runOnUiThread {
-                    alert {
-                        title = "Disconnected"
-                        message = "Disconnected or unable to connect to device."
-                        positiveButton("OK"){}
-                    }.show()
+            onDisconnect = {
+                onDisconnect = {
+                    val builder = AlertDialog.Builder(this@BleAndLocationConnection)
+                    builder.setMessage("disconnected or can't connect to device")
+                        .setPositiveButton("okay") { _,_ -> }
+                    val alertDialog = builder.create()
+                    alertDialog.show()
                 }
-            }*/
+            }
         }
     }
 

@@ -1,16 +1,21 @@
 package com.example.ekg_app
 
+import android.app.AlertDialog
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothGattCharacteristic
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import com.example.ekg_app.ble.BleConnectionManager
 import com.example.ekg_app.ble.ConnectionEventListener
 import com.example.ekg_app.ble.isNotifiable
 import com.example.ekg_app.ble.isReadable
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -33,15 +38,15 @@ class RecordScreen : AppCompatActivity() {
 
     private val connectionEventListener by lazy {
         ConnectionEventListener().apply {
-            /*onDisconnect = {
-                runOnUiThread {
-                    alert {
-                        title = "Disconnected"
-                        message = "Disconnected from device."
-                        positiveButton("OK") { onBackPressed() }
-                    }.show()
-                }
-            }*/
+            onDisconnect = {
+                val builder = AlertDialog.Builder(this@RecordScreen)
+                builder.setMessage("disconnected or can't connect to device")
+                    .setPositiveButton("okay") { _, _ ->
+                        onBackPressed()
+                    }
+                val alertDialog = builder.create()
+                alertDialog.show()
+            }
 
             onCharacteristicRead = { _, characteristic ->
                 val stringValue = String(characteristic.value)
@@ -79,6 +84,14 @@ class RecordScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_record_screen)
 
+        val backBtn: ImageButton = findViewById(R.id.backToMainPage)
+        backBtn.setOnClickListener {
+            val backIntent = Intent(this@RecordScreen, UserProfile::class.java)
+            BleConnectionManager.unregisterListener(connectionEventListener)
+            BleConnectionManager.tearDownConnection(device)
+            startActivity(backIntent)
+        }
+
         BleConnectionManager.registerListener(connectionEventListener)
         device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
             ?: error("Missing BluetoothDevice from Activity")
@@ -91,6 +104,12 @@ class RecordScreen : AppCompatActivity() {
         lineChart.setDrawGridBackground(false)
         lineChart.setPinchZoom(true)
         lineChart.setBackgroundColor(Color.WHITE)
+        lineChart.axisRight.setDrawLabels(false)
+        lineChart.axisLeft.setDrawLabels(false)
+        lineChart.xAxis.setDrawLabels(false)
+//        lineChart.axisLeft.isEnabled = false
+//        lineChart.axisRight.isEnabled = false
+        lineChart.legend.isEnabled = false
 
         val data = LineData()
         data.setValueTextColor(Color.WHITE)
@@ -130,10 +149,13 @@ class RecordScreen : AppCompatActivity() {
         val set = LineDataSet(null, "")
         set.axisDependency = YAxis.AxisDependency.LEFT
         set.lineWidth = 2f
-        set.color = Color.BLACK
-        set.isHighlightEnabled = false
-        set.setDrawValues(false)
-        set.setDrawCircles(false)
+        set.color = Color.LTGRAY
+        set.fillColor = Color.CYAN
+        set.fillAlpha = 30
+        set.isHighlightEnabled = true
+        set.setDrawFilled(true)
+        set.setDrawValues(true)
+        set.setDrawCircles(true)
         set.mode = LineDataSet.Mode.CUBIC_BEZIER
         set.cubicIntensity = 0.1f
 
