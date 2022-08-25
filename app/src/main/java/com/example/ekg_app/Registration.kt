@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Pair
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.material.textfield.TextInputLayout
@@ -39,9 +40,24 @@ class Registration : AppCompatActivity() {
         image = findViewById(R.id.logo_image)
         logoText = findViewById(R.id.logo_text)
         infoText = findViewById(R.id.infoText)
+
+        val loginBtn: Button = findViewById(R.id.backToLoginBtn)
+        val registerBtn: Button = findViewById(R.id.startRegisterBtn)
+
+        loginBtn.setOnClickListener {
+            backToLogin()
+        }
+
+        registerBtn.setOnClickListener {
+            registerUser()
+        }
     }
 
-    fun backToLogin(view: View) {
+    override fun onBackPressed() {
+        backToLogin()
+    }
+
+    private fun backToLogin() {
         val intent = Intent(this@Registration, Login::class.java)
         val pair1: Pair<View, String> =
             Pair.create(image, "logo_image_transition")
@@ -65,7 +81,7 @@ class Registration : AppCompatActivity() {
         startActivity(intent, options.toBundle())
     }
 
-    fun registerUser(view: View) {
+    private fun registerUser() {
         if (!validateName() or !validateUserName() or !validateEmail() or !validatePhoneNo() or !validatePassword()) {
             return
         }

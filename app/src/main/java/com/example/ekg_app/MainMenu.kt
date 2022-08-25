@@ -12,6 +12,7 @@ class MainMenu : AppCompatActivity() {
 
         val userProfileMenu: CardView = findViewById(R.id.userProfile)
         val startScan: CardView = findViewById(R.id.startScan)
+        val logout: CardView = findViewById(R.id.logout)
 
         val intent: Intent = intent
         val userFullName = intent.getStringExtra("name")
@@ -31,8 +32,13 @@ class MainMenu : AppCompatActivity() {
         }
 
         startScan.setOnClickListener {
-            val intentStartScan = Intent(this@MainMenu, BleAndLocationConnection::class.java)
-            startActivity(intentStartScan)
+            startActivity(Intent(this@MainMenu, BleAndLocationConnection::class.java))
+        }
+
+        logout.setOnClickListener {
+            startActivity(Intent(this@MainMenu, Login::class.java))
         }
     }
+
+    override fun onBackPressed() {}
 }

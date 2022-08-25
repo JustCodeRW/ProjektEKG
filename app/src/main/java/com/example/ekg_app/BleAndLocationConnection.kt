@@ -123,6 +123,10 @@ class BleAndLocationConnection : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        startActivity(Intent(this@BleAndLocationConnection, MainMenu::class.java))
+    }
+
     //method for checking if location permission is granted
     override fun onRequestPermissionsResult(
         requestCode: Int,

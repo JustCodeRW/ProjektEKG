@@ -149,7 +149,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/black"
-            android:onClick="registerUser"
             android:text="@string/start"
             android:textColor="#fff"
             android:transitionName="startBtn_transition"
@@ -161,7 +160,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:background="@android:color/transparent"
-            android:onClick="backToLogin"
             android:text="@string/already_have_an_account_login"
             android:textColor="#000"
             android:transitionName="signIn_transition" />
