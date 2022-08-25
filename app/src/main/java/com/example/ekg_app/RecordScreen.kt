@@ -9,13 +9,11 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.get
 import com.example.ekg_app.ble.BleConnectionManager
 import com.example.ekg_app.ble.ConnectionEventListener
 import com.example.ekg_app.ble.isNotifiable
 import com.example.ekg_app.ble.isReadable
 import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -118,6 +116,8 @@ class RecordScreen : AppCompatActivity() {
 
         startCharacteristicRead(characteristics)
     }
+
+    override fun onBackPressed() {}
 
     override fun onDestroy() {
         BleConnectionManager.unregisterListener(connectionEventListener)

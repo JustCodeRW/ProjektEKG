@@ -16,7 +16,7 @@ class MainMenu : AppCompatActivity() {
 
         val intent: Intent = intent
         val userFullName = intent.getStringExtra("name")
-        val userName = intent.getStringExtra("username")
+        val userName = intent.getStringExtra("userName")
         val userEmail = intent.getStringExtra("email")
         val userPhoneNo = intent.getStringExtra("phoneNo")
         val userPassword = intent.getStringExtra("password")
@@ -24,7 +24,7 @@ class MainMenu : AppCompatActivity() {
         userProfileMenu.setOnClickListener {
             val intentUserProfile = Intent(this@MainMenu, UserProfile::class.java)
             intentUserProfile.putExtra("name", userFullName)
-            intentUserProfile.putExtra("username", userName)
+            intentUserProfile.putExtra("userName", userName)
             intentUserProfile.putExtra("email", userEmail)
             intentUserProfile.putExtra("phoneNo", userPhoneNo)
             intentUserProfile.putExtra("password", userPassword)

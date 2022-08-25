@@ -144,7 +144,7 @@ class Login : AppCompatActivity() {
                         val nameFromDB: String? = snapshot.child(userEnteredUsername).child("name")
                             .getValue(String::class.java)
                         val usernameFromDB: String? =
-                            snapshot.child(userEnteredUsername).child("username")
+                            snapshot.child(userEnteredUsername).child("userName")
                                 .getValue(String::class.java)
                         val phoneNoFromDB: String? =
                             snapshot.child(userEnteredUsername).child("phoneNo")
@@ -156,7 +156,7 @@ class Login : AppCompatActivity() {
                         val intent = Intent(applicationContext, MainMenu::class.java)
 
                         intent.putExtra("name", nameFromDB)
-                        intent.putExtra("username", usernameFromDB)
+                        intent.putExtra("userName", usernameFromDB)
                         intent.putExtra("email", emailFromDB)
                         intent.putExtra("phoneNo", phoneNoFromDB)
                         intent.putExtra("password", passwordFromDB)

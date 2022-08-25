@@ -2,13 +2,13 @@ package com.example.ekg_app
 
 import android.app.ActivityOptions
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Pair
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.*
 
@@ -206,7 +206,7 @@ class Registration : AppCompatActivity() {
                     val nameFromDB: String? =
                         snapshot.child(userName).child("name").getValue(String::class.java)
                     val usernameFromDB: String? =
-                        snapshot.child(userName).child("username").getValue(String::class.java)
+                        snapshot.child(userName).child("userName").getValue(String::class.java)
                     val phoneNoFromDB: String? =
                         snapshot.child(userName).child("phoneNo").getValue(String::class.java)
                     val emailFromDB: String? =
@@ -215,7 +215,7 @@ class Registration : AppCompatActivity() {
                     val intent = Intent(this@Registration, UserProfile::class.java)
 
                     intent.putExtra("name", nameFromDB)
-                    intent.putExtra("username", usernameFromDB)
+                    intent.putExtra("userName", usernameFromDB)
                     intent.putExtra("email", emailFromDB)
                     intent.putExtra("phoneNo", phoneNoFromDB)
                     intent.putExtra("password", passwordFromDB)

@@ -1,9 +1,9 @@
 package com.example.ekg_app
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textfield.TextInputLayout
 
@@ -48,7 +48,7 @@ class UserProfile : AppCompatActivity() {
     private fun showAllUserData() {
         val intent: Intent = intent
         val userFullName = intent.getStringExtra("name")
-        val userName = intent.getStringExtra("username")
+        val userName = intent.getStringExtra("userName")
         val userEmail = intent.getStringExtra("email")
         val userPhoneNo = intent.getStringExtra("phoneNo")
         val userPassword = intent.getStringExtra("password")
