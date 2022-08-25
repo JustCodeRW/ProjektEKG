@@ -149,8 +149,8 @@ class RecordScreen : AppCompatActivity() {
         val set = LineDataSet(null, "")
         set.axisDependency = YAxis.AxisDependency.LEFT
         set.lineWidth = 2f
-        set.color = Color.LTGRAY
-        set.fillColor = Color.CYAN
+        set.color = Color.RED
+        set.fillColor = Color.TRANSPARENT
         set.fillAlpha = 30
         set.isHighlightEnabled = true
         set.setDrawFilled(true)

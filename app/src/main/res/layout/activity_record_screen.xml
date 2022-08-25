@@ -16,11 +16,12 @@
 
         <ImageButton
             android:id="@+id/backToMainPage"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:src="@drawable/outline_arrow_circle_left_white_48dp" />
+            android:background="@color/white"
+            android:src="@drawable/outline_arrow_circle_left_red_300_24dp" />
 
         <TextView
             android:layout_width="match_parent"

@@ -193,6 +193,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textPassword"
                     android:drawableStart="@drawable/ic_lock"
                     android:drawablePadding="10dp"
                     android:text="@string/test" />
