@@ -1,8 +1,8 @@
 package com.example.ekg_app
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 
 class MainMenu : AppCompatActivity() {
