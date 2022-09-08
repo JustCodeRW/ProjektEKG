@@ -9,6 +9,7 @@ If you want to used it in an other ways just change the graph behavior in the Re
 There also functins for writing implemented that can be used if needed.
 
 
+There is also a test user implementet: User Name: Test, Password: yxcv#
 
 In the root directory i also added the Arduino file that the ESP is using.
 
