@@ -7,3 +7,7 @@ To work properly a ESP or something similar is needed that transferes data in fo
 
 If you want to used it in an other ways just change the graph behavior in the RecordScreen Activity.
 There also functins for writing implemented that can be used if needed.
+
+
+
+In the root directory i also added the Arduino file that the ESP is using.
