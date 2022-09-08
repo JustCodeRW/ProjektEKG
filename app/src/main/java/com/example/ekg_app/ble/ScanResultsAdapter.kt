@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ekg_app.R
 
-
+//this class shows the devices that are founded to the user
 class ScanResultsAdapter(
     private val dataSet: List<ScanResult>,
     private val onClickListener: ((device: ScanResult) -> Unit)

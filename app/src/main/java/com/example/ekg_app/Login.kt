@@ -14,6 +14,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.*
 import android.util.Pair as UtilPair
 
+//the loginActivity is created for the user to login into the application
 class Login : AppCompatActivity() {
     private lateinit var username: TextInputLayout
     private lateinit var password: TextInputLayout
@@ -22,7 +23,7 @@ class Login : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        //Hooks
+        //here the animation for the login is created
         val image: ImageView = findViewById(R.id.logo_image)
         val logoText: TextView = findViewById(R.id.logo_text)
         val infoText: TextView = findViewById(R.id.infoText)
@@ -33,8 +34,9 @@ class Login : AppCompatActivity() {
         val loginBtn: Button = findViewById(R.id.loginBtn)
         val buttonLoadRegistration: Button = findViewById(R.id.registrationBtn)
 
-        loginBtn.setOnClickListener {loginUser()}
+        loginBtn.setOnClickListener { loginUser() }
 
+        //at this point a listener is creating that points to the registration Screen and starts an animation
         buttonLoadRegistration.setOnClickListener {
             val intent = Intent(this@Login, Registration::class.java)
             val pair1: android.util.Pair<View, String> =
@@ -69,6 +71,7 @@ class Login : AppCompatActivity() {
         }
     }
 
+    //the onBackPressed method defines what happen if the button is pressed
     override fun onBackPressed() {
         val builder = AlertDialog.Builder(this)
         builder.setMessage("Are you sure to Exit? ")
@@ -83,6 +86,7 @@ class Login : AppCompatActivity() {
         alertDialog.show()
     }
 
+    //methods to check users input
     private fun validateUserName(): Boolean {
         val value: String = username.editText?.text.toString()
 
@@ -109,6 +113,7 @@ class Login : AppCompatActivity() {
         }
     }
 
+    //method to login the User
     private fun loginUser() {
         if (!validateUserName() or !validatePassword()) {
             return
@@ -117,6 +122,9 @@ class Login : AppCompatActivity() {
         }
     }
 
+    /*method to check the data from the users input with the
+    *data in the database
+    */
     private fun isUser() {
         val userEnteredUsername: String = username.editText?.text.toString().trim()
         val userEnteredPassword: String = password.editText?.text.toString().trim()

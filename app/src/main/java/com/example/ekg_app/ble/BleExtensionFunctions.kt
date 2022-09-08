@@ -6,6 +6,11 @@ import android.bluetooth.BluetoothGattDescriptor
 import android.util.Log
 import java.util.*
 
+/*this file has the method that are used
+* in the BleConnectionManager, the methods
+* are implemented here to simplify the complexity
+* if the BleConnectionManager
+*/
 const val CCC_DESCRIPTOR_UUID = "00002902-0000-1000-8000-00805F9B34FB"
 
 fun BluetoothGatt.findCharacteristic(uuid: UUID): BluetoothGattCharacteristic? {
@@ -32,6 +37,7 @@ fun BluetoothGatt.findDescriptor(uuid: UUID): BluetoothGattDescriptor? {
     return null
 }
 
+//this method prints a table with all attribute of the ESP32
 fun BluetoothGatt.printGattTable() {
     if (services.isEmpty()) {
         Log.i(

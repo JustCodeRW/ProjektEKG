@@ -35,7 +35,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.Priority
 
-
+//this Activity scans for the BLE Devices (ESP32) and connects to them
 private const val LOCATION_PERMISSION_REQUEST_CODE = 2
 
 @SuppressLint("MissingPermission")
@@ -153,7 +153,7 @@ class BleAndLocationConnection : AppCompatActivity() {
             }
         }
 
-    //Bluetooth
+    //these methods asking for Bluetooth permission
     private var requestBluetooth =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
@@ -172,7 +172,7 @@ class BleAndLocationConnection : AppCompatActivity() {
         }
     }
 
-    //Location
+    //this method ask for the Location
     private fun enableLocation() {
         val locationRequest = LocationRequest.create()
         locationRequest.priority = Priority.PRIORITY_HIGH_ACCURACY
@@ -220,6 +220,7 @@ class BleAndLocationConnection : AppCompatActivity() {
         }
     }
 
+    //this method starts a BleScan
     private fun startBleScan() {
         Log.d("Button pressed", "Start Location ")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !isLocationPermissionGranted) {
@@ -237,6 +238,7 @@ class BleAndLocationConnection : AppCompatActivity() {
         isScanning = false
     }
 
+    //the scanCallback object saves the scan state and shows if devices are founded
     private val scanCallback = object : ScanCallback() {
         @SuppressLint("MissingPermission")
         override fun onScanResult(callbackType: Int, result: ScanResult) {
@@ -261,6 +263,7 @@ class BleAndLocationConnection : AppCompatActivity() {
         }
     }
 
+    //the listener points to the record Screen if the connection was successful
     private val connectionEventListener by lazy {
         ConnectionEventListener().apply {
             onConnectionSetupComplete = { gatt ->
@@ -282,6 +285,7 @@ class BleAndLocationConnection : AppCompatActivity() {
         }
     }
 
+    //the next methods checking if the needed permissions are there
     private fun requestLocationPermission() {
         requestPermission(
             Manifest.permission.ACCESS_FINE_LOCATION,

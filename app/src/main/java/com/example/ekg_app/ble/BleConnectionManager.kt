@@ -11,6 +11,10 @@ import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 
+/*the BleConnectionManager implements all the methods that are needed
+*to connect, read, write etc. from a Ble Device
+*and has all gatt functions
+*/
 object BleConnectionManager {
     private var listeners: MutableSet<WeakReference<ConnectionEventListener>> = mutableSetOf()
     private val deviceGattMap = ConcurrentHashMap<BluetoothDevice, BluetoothGatt>()
@@ -42,6 +46,7 @@ object BleConnectionManager {
         }
     }
 
+    //this method connects to the Device
     fun connect(device: BluetoothDevice, context: Context) {
         if (device.isConnected()) {
             Log.d("BLE Connection", "BLE is already connected to ${device.address}")
@@ -50,6 +55,7 @@ object BleConnectionManager {
         }
     }
 
+    //this method closes the Connection
     fun tearDownConnection(device: BluetoothDevice) {
         if (device.isConnected()) {
             enqueueOperation(DisConnect(device))
@@ -58,6 +64,7 @@ object BleConnectionManager {
         }
     }
 
+    //this method reads the last characteristic from the device (the data)
     fun readCharacteristic(device: BluetoothDevice, characteristic: BluetoothGattCharacteristic) {
         if (device.isConnected() && characteristic.isReadable()) {
             enqueueOperation(CharacteristicRead(device, characteristic.uuid))
@@ -71,6 +78,7 @@ object BleConnectionManager {
         }
     }
 
+    //this method reads/notifies about all the characteristics of the Device (all data)
     fun enableNotifications(device: BluetoothDevice, characteristic: BluetoothGattCharacteristic) {
         if (device.isConnected() && (characteristic.isIndicatable() || characteristic.isNotifiable())) {
             enqueueOperation(EnableNotifications(device, characteristic.uuid))
@@ -79,6 +87,7 @@ object BleConnectionManager {
         }
     }
 
+    //the next few methods implements a queue so only one operation at the time is applied
     @Synchronized
     private fun enqueueOperation(operation: BleOperationType) {
         operationQueue.add(operation)
@@ -204,6 +213,7 @@ object BleConnectionManager {
         }
     }
 
+    //the gattCallback object implements all gatt operations
     private val gattCallback = object : BluetoothGattCallback() {
         @SuppressLint("MissingPermission")
         override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {

@@ -12,6 +12,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.*
 
+/*the registration Activity is needed to create a
+* new user and save the user into the database
+*/
 class Registration : AppCompatActivity() {
     private lateinit var rootNode: FirebaseDatabase
     private lateinit var reference: DatabaseReference
@@ -30,7 +33,7 @@ class Registration : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
 
-        // Hooks
+        //here the animation are created
         registeredName = findViewById(R.id.name)
         registeredUsername = findViewById(R.id.username)
         registeredEmail = findViewById(R.id.email)
@@ -44,19 +47,23 @@ class Registration : AppCompatActivity() {
         val loginBtn: Button = findViewById(R.id.backToLoginBtn)
         val registerBtn: Button = findViewById(R.id.startRegisterBtn)
 
+        //this listener points to the login Screen
         loginBtn.setOnClickListener {
             backToLogin()
         }
 
+        //this listener register a new User
         registerBtn.setOnClickListener {
             registerUser()
         }
     }
 
+    //the onBackPressed method defines what happen if the button is pressed
     override fun onBackPressed() {
         backToLogin()
     }
 
+    //this method takes the user back to the login Screen
     private fun backToLogin() {
         val intent = Intent(this@Registration, Login::class.java)
         val pair1: Pair<View, String> =
@@ -81,6 +88,9 @@ class Registration : AppCompatActivity() {
         startActivity(intent, options.toBundle())
     }
 
+    /*this method creates a new user and transfers the
+    * data into the database
+    */
     private fun registerUser() {
         if (!validateName() or !validateUserName() or !validateEmail() or !validatePhoneNo() or !validatePassword()) {
             return
@@ -104,6 +114,9 @@ class Registration : AppCompatActivity() {
         dataTransferToProfileView(userName)
     }
 
+    /*the next few methods checks if
+    * the user input data is correct and
+    * the user is not yet created  */
     private fun validateName(): Boolean {
         val value = registeredName.editText?.text.toString()
 
@@ -193,7 +206,7 @@ class Registration : AppCompatActivity() {
         }
     }
 
-
+    //here the data from the user is transferred to the userProfile Screen
     private fun dataTransferToProfileView(userName: String) {
         val userReference: Query = reference.orderByChild("userName").equalTo(userName)
 

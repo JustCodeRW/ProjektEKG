@@ -5,6 +5,9 @@ import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCharacteristic
 import android.bluetooth.BluetoothGattDescriptor
 
+/*the ConnectionEventListener class has different
+* states of the ESP32 or other devices
+*/
 class ConnectionEventListener {
     var onConnectionSetupComplete: ((BluetoothGatt) -> Unit)? = null
     var onDisconnect: ((BluetoothDevice) -> Unit)? = null

@@ -4,6 +4,10 @@ import android.bluetooth.BluetoothDevice
 import android.content.Context
 import java.util.*
 
+/*this class implements different data classes
+* that are used in the BleConnectionManager and are abilities
+* of the ESP32
+*/
 sealed class BleOperationType {
     abstract val device: BluetoothDevice
 }

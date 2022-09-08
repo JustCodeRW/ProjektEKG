@@ -21,6 +21,10 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import java.util.*
 
+/*the recordScreen Activity creates a graph
+* with the data  that is transferred
+* from the ESP 32
+*/
 class RecordScreen : AppCompatActivity() {
     private lateinit var device: BluetoothDevice
     private lateinit var lineChart: LineChart
@@ -34,6 +38,9 @@ class RecordScreen : AppCompatActivity() {
         } ?: listOf()
     }
 
+    /*this listener is used to get the different
+    * states of the ESP32 and start to save the data
+    */
     private val connectionEventListener by lazy {
         ConnectionEventListener().apply {
             onDisconnect = {
@@ -82,6 +89,9 @@ class RecordScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_record_screen)
 
+        /*the listener transfers the user back to the
+        * mainMenu and stops the connection to the ESP
+        */
         val backBtn: ImageButton = findViewById(R.id.backToMainPage)
         backBtn.setOnClickListener {
             val backIntent = Intent(this@RecordScreen, MainMenu::class.java)
@@ -94,6 +104,7 @@ class RecordScreen : AppCompatActivity() {
         device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
             ?: error("Missing BluetoothDevice from Activity")
 
+        //here the Chart/Graph is created
         lineChart = findViewById(R.id.lineChart)
         lineChart.description.isEnabled = false
         lineChart.isDragEnabled = true
@@ -125,6 +136,7 @@ class RecordScreen : AppCompatActivity() {
         super.onDestroy()
     }
 
+    //this method adds the data from the ESP 32 into the chart
     private fun addEntry(value: Float) {
         val data = lineChart.data
 
@@ -145,6 +157,10 @@ class RecordScreen : AppCompatActivity() {
         }
     }
 
+    /*this method creates the set for the chart
+     and some designs for the set (the Chart design behaviour
+     can be changed here)
+   */
     private fun createSet(): LineDataSet {
         val set = LineDataSet(null, "")
         set.axisDependency = YAxis.AxisDependency.LEFT
@@ -162,6 +178,12 @@ class RecordScreen : AppCompatActivity() {
         return set
     }
 
+    /*this method starts to read the data form the ESP32
+    * there are to ways to read data.
+    * the user can read the last input or get all data
+    * if you want to read the last input just comment out the
+    * BleConnectionManager.readCharacteristic(device, characteristic)
+    * and comment in the BleConnectionManager.enableNotifications() */
     private fun startCharacteristicRead(characteristics: List<BluetoothGattCharacteristic>) {
         for (characteristic in characteristics) {
             if (characteristic.isReadable() && characteristic.isNotifiable()) {

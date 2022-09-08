@@ -4,7 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-
+/*the mainMenu activity shows the user
+* an overview of the different possibilities of
+* the application for the user
+*/
 class MainMenu : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +24,7 @@ class MainMenu : AppCompatActivity() {
         val userPhoneNo = intent.getStringExtra("phoneNo")
         val userPassword = intent.getStringExtra("password")
 
+        //the listener is created to point to the userProfileScreen
         userProfileMenu.setOnClickListener {
             val intentUserProfile = Intent(this@MainMenu, UserProfile::class.java)
             intentUserProfile.putExtra("name", userFullName)
@@ -31,10 +35,12 @@ class MainMenu : AppCompatActivity() {
             startActivity(intentUserProfile)
         }
 
+        //this listener is created to point to the bleLocationConnection Screen
         startScan.setOnClickListener {
             startActivity(Intent(this@MainMenu, BleAndLocationConnection::class.java))
         }
 
+        //this listener is created to point to the Login Screen
         logout.setOnClickListener {
             startActivity(Intent(this@MainMenu, Login::class.java))
         }

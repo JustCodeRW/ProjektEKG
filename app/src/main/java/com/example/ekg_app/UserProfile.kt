@@ -7,6 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textfield.TextInputLayout
 
+/*the userProfile Activity shows a
+* screen with a overview of the created user
+* and its input
+*/
 class UserProfile : AppCompatActivity() {
     private lateinit var fullName: TextInputLayout
     private lateinit var email: TextInputLayout
@@ -29,10 +33,12 @@ class UserProfile : AppCompatActivity() {
         val menu: MaterialCardView = findViewById(R.id.menu)
         val startScan: MaterialCardView = findViewById(R.id.startScan)
 
+        //listener that points to the mainMenu Screen
         menu.setOnClickListener {
             startActivity(Intent(this@UserProfile, MainMenu::class.java))
         }
 
+        //listener that points to the BleAndLocationConnection Screen
         startScan.setOnClickListener {
             startActivity(Intent(this@UserProfile, BleAndLocationConnection::class.java))
         }
@@ -45,6 +51,7 @@ class UserProfile : AppCompatActivity() {
         showAllUserData()
     }
 
+    //method to get the data from the user and show it
     private fun showAllUserData() {
         val intent: Intent = intent
         val userFullName = intent.getStringExtra("name")
